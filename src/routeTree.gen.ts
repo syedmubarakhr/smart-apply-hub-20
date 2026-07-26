@@ -15,6 +15,8 @@ import { Route as LoginDeveloperRouteImport } from './routes/login.developer'
 import { Route as LoginCompanyRouteImport } from './routes/login.company'
 import { Route as FaceVerifyRouteImport } from './routes/face.verify'
 import { Route as FaceRegisterRouteImport } from './routes/face.register'
+import { Route as DashboardDeveloperRouteImport } from './routes/dashboard.developer'
+import { Route as DashboardCompanyRouteImport } from './routes/dashboard.company'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,9 +48,21 @@ const FaceRegisterRoute = FaceRegisterRouteImport.update({
   path: '/face/register',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardDeveloperRoute = DashboardDeveloperRouteImport.update({
+  id: '/dashboard/developer',
+  path: '/dashboard/developer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardCompanyRoute = DashboardCompanyRouteImport.update({
+  id: '/dashboard/company',
+  path: '/dashboard/company',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard/company': typeof DashboardCompanyRoute
+  '/dashboard/developer': typeof DashboardDeveloperRoute
   '/face/register': typeof FaceRegisterRoute
   '/face/verify': typeof FaceVerifyRoute
   '/login/company': typeof LoginCompanyRoute
@@ -57,6 +71,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dashboard/company': typeof DashboardCompanyRoute
+  '/dashboard/developer': typeof DashboardDeveloperRoute
   '/face/register': typeof FaceRegisterRoute
   '/face/verify': typeof FaceVerifyRoute
   '/login/company': typeof LoginCompanyRoute
@@ -66,6 +82,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dashboard/company': typeof DashboardCompanyRoute
+  '/dashboard/developer': typeof DashboardDeveloperRoute
   '/face/register': typeof FaceRegisterRoute
   '/face/verify': typeof FaceVerifyRoute
   '/login/company': typeof LoginCompanyRoute
@@ -76,6 +94,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/dashboard/company'
+    | '/dashboard/developer'
     | '/face/register'
     | '/face/verify'
     | '/login/company'
@@ -84,6 +104,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/dashboard/company'
+    | '/dashboard/developer'
     | '/face/register'
     | '/face/verify'
     | '/login/company'
@@ -92,6 +114,8 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/dashboard/company'
+    | '/dashboard/developer'
     | '/face/register'
     | '/face/verify'
     | '/login/company'
@@ -101,6 +125,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardCompanyRoute: typeof DashboardCompanyRoute
+  DashboardDeveloperRoute: typeof DashboardDeveloperRoute
   FaceRegisterRoute: typeof FaceRegisterRoute
   FaceVerifyRoute: typeof FaceVerifyRoute
   LoginCompanyRoute: typeof LoginCompanyRoute
@@ -152,11 +178,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaceRegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/developer': {
+      id: '/dashboard/developer'
+      path: '/dashboard/developer'
+      fullPath: '/dashboard/developer'
+      preLoaderRoute: typeof DashboardDeveloperRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/company': {
+      id: '/dashboard/company'
+      path: '/dashboard/company'
+      fullPath: '/dashboard/company'
+      preLoaderRoute: typeof DashboardCompanyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardCompanyRoute: DashboardCompanyRoute,
+  DashboardDeveloperRoute: DashboardDeveloperRoute,
   FaceRegisterRoute: FaceRegisterRoute,
   FaceVerifyRoute: FaceVerifyRoute,
   LoginCompanyRoute: LoginCompanyRoute,
@@ -166,3 +208,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
