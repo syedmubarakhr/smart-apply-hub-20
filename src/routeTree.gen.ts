@@ -10,33 +10,128 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LoginEmployeeRouteImport } from './routes/login.employee'
+import { Route as LoginDeveloperRouteImport } from './routes/login.developer'
+import { Route as LoginCompanyRouteImport } from './routes/login.company'
+import { Route as FaceVerifyRouteImport } from './routes/face.verify'
+import { Route as FaceRegisterRouteImport } from './routes/face.register'
+import { Route as DashboardDeveloperRouteImport } from './routes/dashboard.developer'
+import { Route as DashboardCompanyRouteImport } from './routes/dashboard.company'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginEmployeeRoute = LoginEmployeeRouteImport.update({
+  id: '/login/employee',
+  path: '/login/employee',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginDeveloperRoute = LoginDeveloperRouteImport.update({
+  id: '/login/developer',
+  path: '/login/developer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginCompanyRoute = LoginCompanyRouteImport.update({
+  id: '/login/company',
+  path: '/login/company',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaceVerifyRoute = FaceVerifyRouteImport.update({
+  id: '/face/verify',
+  path: '/face/verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaceRegisterRoute = FaceRegisterRouteImport.update({
+  id: '/face/register',
+  path: '/face/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardDeveloperRoute = DashboardDeveloperRouteImport.update({
+  id: '/dashboard/developer',
+  path: '/dashboard/developer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardCompanyRoute = DashboardCompanyRouteImport.update({
+  id: '/dashboard/company',
+  path: '/dashboard/company',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard/company': typeof DashboardCompanyRoute
+  '/dashboard/developer': typeof DashboardDeveloperRoute
+  '/face/register': typeof FaceRegisterRoute
+  '/face/verify': typeof FaceVerifyRoute
+  '/login/company': typeof LoginCompanyRoute
+  '/login/developer': typeof LoginDeveloperRoute
+  '/login/employee': typeof LoginEmployeeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dashboard/company': typeof DashboardCompanyRoute
+  '/dashboard/developer': typeof DashboardDeveloperRoute
+  '/face/register': typeof FaceRegisterRoute
+  '/face/verify': typeof FaceVerifyRoute
+  '/login/company': typeof LoginCompanyRoute
+  '/login/developer': typeof LoginDeveloperRoute
+  '/login/employee': typeof LoginEmployeeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dashboard/company': typeof DashboardCompanyRoute
+  '/dashboard/developer': typeof DashboardDeveloperRoute
+  '/face/register': typeof FaceRegisterRoute
+  '/face/verify': typeof FaceVerifyRoute
+  '/login/company': typeof LoginCompanyRoute
+  '/login/developer': typeof LoginDeveloperRoute
+  '/login/employee': typeof LoginEmployeeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/dashboard/company'
+    | '/dashboard/developer'
+    | '/face/register'
+    | '/face/verify'
+    | '/login/company'
+    | '/login/developer'
+    | '/login/employee'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/dashboard/company'
+    | '/dashboard/developer'
+    | '/face/register'
+    | '/face/verify'
+    | '/login/company'
+    | '/login/developer'
+    | '/login/employee'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard/company'
+    | '/dashboard/developer'
+    | '/face/register'
+    | '/face/verify'
+    | '/login/company'
+    | '/login/developer'
+    | '/login/employee'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardCompanyRoute: typeof DashboardCompanyRoute
+  DashboardDeveloperRoute: typeof DashboardDeveloperRoute
+  FaceRegisterRoute: typeof FaceRegisterRoute
+  FaceVerifyRoute: typeof FaceVerifyRoute
+  LoginCompanyRoute: typeof LoginCompanyRoute
+  LoginDeveloperRoute: typeof LoginDeveloperRoute
+  LoginEmployeeRoute: typeof LoginEmployeeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +143,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login/employee': {
+      id: '/login/employee'
+      path: '/login/employee'
+      fullPath: '/login/employee'
+      preLoaderRoute: typeof LoginEmployeeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/developer': {
+      id: '/login/developer'
+      path: '/login/developer'
+      fullPath: '/login/developer'
+      preLoaderRoute: typeof LoginDeveloperRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/company': {
+      id: '/login/company'
+      path: '/login/company'
+      fullPath: '/login/company'
+      preLoaderRoute: typeof LoginCompanyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/face/verify': {
+      id: '/face/verify'
+      path: '/face/verify'
+      fullPath: '/face/verify'
+      preLoaderRoute: typeof FaceVerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/face/register': {
+      id: '/face/register'
+      path: '/face/register'
+      fullPath: '/face/register'
+      preLoaderRoute: typeof FaceRegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/developer': {
+      id: '/dashboard/developer'
+      path: '/dashboard/developer'
+      fullPath: '/dashboard/developer'
+      preLoaderRoute: typeof DashboardDeveloperRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/company': {
+      id: '/dashboard/company'
+      path: '/dashboard/company'
+      fullPath: '/dashboard/company'
+      preLoaderRoute: typeof DashboardCompanyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardCompanyRoute: DashboardCompanyRoute,
+  DashboardDeveloperRoute: DashboardDeveloperRoute,
+  FaceRegisterRoute: FaceRegisterRoute,
+  FaceVerifyRoute: FaceVerifyRoute,
+  LoginCompanyRoute: LoginCompanyRoute,
+  LoginDeveloperRoute: LoginDeveloperRoute,
+  LoginEmployeeRoute: LoginEmployeeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
