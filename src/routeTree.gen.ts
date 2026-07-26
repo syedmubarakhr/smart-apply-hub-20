@@ -10,33 +10,102 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LoginEmployeeRouteImport } from './routes/login.employee'
+import { Route as LoginDeveloperRouteImport } from './routes/login.developer'
+import { Route as LoginCompanyRouteImport } from './routes/login.company'
+import { Route as FaceVerifyRouteImport } from './routes/face.verify'
+import { Route as FaceRegisterRouteImport } from './routes/face.register'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginEmployeeRoute = LoginEmployeeRouteImport.update({
+  id: '/login/employee',
+  path: '/login/employee',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginDeveloperRoute = LoginDeveloperRouteImport.update({
+  id: '/login/developer',
+  path: '/login/developer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginCompanyRoute = LoginCompanyRouteImport.update({
+  id: '/login/company',
+  path: '/login/company',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaceVerifyRoute = FaceVerifyRouteImport.update({
+  id: '/face/verify',
+  path: '/face/verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaceRegisterRoute = FaceRegisterRouteImport.update({
+  id: '/face/register',
+  path: '/face/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/face/register': typeof FaceRegisterRoute
+  '/face/verify': typeof FaceVerifyRoute
+  '/login/company': typeof LoginCompanyRoute
+  '/login/developer': typeof LoginDeveloperRoute
+  '/login/employee': typeof LoginEmployeeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/face/register': typeof FaceRegisterRoute
+  '/face/verify': typeof FaceVerifyRoute
+  '/login/company': typeof LoginCompanyRoute
+  '/login/developer': typeof LoginDeveloperRoute
+  '/login/employee': typeof LoginEmployeeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/face/register': typeof FaceRegisterRoute
+  '/face/verify': typeof FaceVerifyRoute
+  '/login/company': typeof LoginCompanyRoute
+  '/login/developer': typeof LoginDeveloperRoute
+  '/login/employee': typeof LoginEmployeeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/face/register'
+    | '/face/verify'
+    | '/login/company'
+    | '/login/developer'
+    | '/login/employee'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/face/register'
+    | '/face/verify'
+    | '/login/company'
+    | '/login/developer'
+    | '/login/employee'
+  id:
+    | '__root__'
+    | '/'
+    | '/face/register'
+    | '/face/verify'
+    | '/login/company'
+    | '/login/developer'
+    | '/login/employee'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  FaceRegisterRoute: typeof FaceRegisterRoute
+  FaceVerifyRoute: typeof FaceVerifyRoute
+  LoginCompanyRoute: typeof LoginCompanyRoute
+  LoginDeveloperRoute: typeof LoginDeveloperRoute
+  LoginEmployeeRoute: typeof LoginEmployeeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +117,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login/employee': {
+      id: '/login/employee'
+      path: '/login/employee'
+      fullPath: '/login/employee'
+      preLoaderRoute: typeof LoginEmployeeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/developer': {
+      id: '/login/developer'
+      path: '/login/developer'
+      fullPath: '/login/developer'
+      preLoaderRoute: typeof LoginDeveloperRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/company': {
+      id: '/login/company'
+      path: '/login/company'
+      fullPath: '/login/company'
+      preLoaderRoute: typeof LoginCompanyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/face/verify': {
+      id: '/face/verify'
+      path: '/face/verify'
+      fullPath: '/face/verify'
+      preLoaderRoute: typeof FaceVerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/face/register': {
+      id: '/face/register'
+      path: '/face/register'
+      fullPath: '/face/register'
+      preLoaderRoute: typeof FaceRegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  FaceRegisterRoute: FaceRegisterRoute,
+  FaceVerifyRoute: FaceVerifyRoute,
+  LoginCompanyRoute: LoginCompanyRoute,
+  LoginDeveloperRoute: LoginDeveloperRoute,
+  LoginEmployeeRoute: LoginEmployeeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
