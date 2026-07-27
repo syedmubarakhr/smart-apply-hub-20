@@ -27,7 +27,7 @@ function CompanyLogin() {
         </div>
       }
     >
-      <LoginForm role="company" redirectTo="/dashboard/company" cta="Sign in to company workspace" />
+      <LoginForm role="company" redirectTo="/login/employee" cta="Sign in to company workspace" identifierLabel="Company ID (email)" />
     </AuthShell>
   );
 }

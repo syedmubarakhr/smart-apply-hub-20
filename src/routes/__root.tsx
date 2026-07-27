@@ -117,6 +117,21 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    import("../integrations/supabase/client").then(({ supabase }) => {
+      const { data: sub } = supabase.auth.onAuthStateChange((event) => {
+        if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
+        router.invalidate();
+        if (event !== "SIGNED_OUT") queryClient.invalidateQueries();
+      });
+      // stash unsubscribe on window so HMR remounts don't leak
+      (window as unknown as { __satsAuthSub?: () => void }).__satsAuthSub?.();
+      (window as unknown as { __satsAuthSub?: () => void }).__satsAuthSub = () =>
+        sub.subscription.unsubscribe();
+    });
+  }, [router, queryClient]);
 
   return (
     <QueryClientProvider client={queryClient}>

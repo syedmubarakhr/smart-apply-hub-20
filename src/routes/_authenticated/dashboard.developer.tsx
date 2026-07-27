@@ -4,7 +4,7 @@ import { DashboardSidebar } from "@/components/dashboard/sidebar";
 import { DashboardHeader } from "@/components/dashboard/header";
 import { Activity, Code2, Users2, Zap } from "lucide-react";
 
-export const Route = createFileRoute("/dashboard/developer")({
+export const Route = createFileRoute("/_authenticated/dashboard/developer")({
   head: () => ({
     meta: [
       { title: "Developer dashboard — SATS" },

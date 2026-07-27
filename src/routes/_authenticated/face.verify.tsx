@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowLeft, CheckCircle2, Loader2, ScanFace, ShieldCheck } from "lucide-react";
 
-export const Route = createFileRoute("/face/verify")({
+export const Route = createFileRoute("/_authenticated/face/verify")({
   head: () => ({
     meta: [
       { title: "Face verification — SATS" },

@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowLeft, Camera, CheckCircle2, ScanFace, ShieldCheck, Sparkles } from "lucide-react";
 
-export const Route = createFileRoute("/face/register")({
+export const Route = createFileRoute("/_authenticated/face/register")({
   head: () => ({
     meta: [
       { title: "Face registration — SATS" },

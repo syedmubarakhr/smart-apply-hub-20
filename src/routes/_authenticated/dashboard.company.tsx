@@ -4,7 +4,7 @@ import { DashboardSidebar } from "@/components/dashboard/sidebar";
 import { DashboardHeader } from "@/components/dashboard/header";
 import { Briefcase, ScanFace, TrendingUp, Users } from "lucide-react";
 
-export const Route = createFileRoute("/dashboard/company")({
+export const Route = createFileRoute("/_authenticated/dashboard/company")({
   head: () => ({
     meta: [
       { title: "Company dashboard — SATS" },

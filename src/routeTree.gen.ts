@@ -9,15 +9,32 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LoginEmployeeRouteImport } from './routes/login.employee'
 import { Route as LoginDeveloperRouteImport } from './routes/login.developer'
 import { Route as LoginCompanyRouteImport } from './routes/login.company'
-import { Route as FaceVerifyRouteImport } from './routes/face.verify'
-import { Route as FaceRegisterRouteImport } from './routes/face.register'
-import { Route as DashboardDeveloperRouteImport } from './routes/dashboard.developer'
-import { Route as DashboardCompanyRouteImport } from './routes/dashboard.company'
+import { Route as AuthenticatedFaceVerifyRouteImport } from './routes/_authenticated/face.verify'
+import { Route as AuthenticatedFaceRegisterRouteImport } from './routes/_authenticated/face.register'
+import { Route as AuthenticatedDashboardDeveloperRouteImport } from './routes/_authenticated/dashboard.developer'
+import { Route as AuthenticatedDashboardCompanyRouteImport } from './routes/_authenticated/dashboard.company'
 
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -38,97 +55,113 @@ const LoginCompanyRoute = LoginCompanyRouteImport.update({
   path: '/login/company',
   getParentRoute: () => rootRouteImport,
 } as any)
-const FaceVerifyRoute = FaceVerifyRouteImport.update({
+const AuthenticatedFaceVerifyRoute = AuthenticatedFaceVerifyRouteImport.update({
   id: '/face/verify',
   path: '/face/verify',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const FaceRegisterRoute = FaceRegisterRouteImport.update({
-  id: '/face/register',
-  path: '/face/register',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardDeveloperRoute = DashboardDeveloperRouteImport.update({
-  id: '/dashboard/developer',
-  path: '/dashboard/developer',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardCompanyRoute = DashboardCompanyRouteImport.update({
-  id: '/dashboard/company',
-  path: '/dashboard/company',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const AuthenticatedFaceRegisterRoute =
+  AuthenticatedFaceRegisterRouteImport.update({
+    id: '/face/register',
+    path: '/face/register',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDashboardDeveloperRoute =
+  AuthenticatedDashboardDeveloperRouteImport.update({
+    id: '/dashboard/developer',
+    path: '/dashboard/developer',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDashboardCompanyRoute =
+  AuthenticatedDashboardCompanyRouteImport.update({
+    id: '/dashboard/company',
+    path: '/dashboard/company',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/dashboard/company': typeof DashboardCompanyRoute
-  '/dashboard/developer': typeof DashboardDeveloperRoute
-  '/face/register': typeof FaceRegisterRoute
-  '/face/verify': typeof FaceVerifyRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/login/company': typeof LoginCompanyRoute
   '/login/developer': typeof LoginDeveloperRoute
   '/login/employee': typeof LoginEmployeeRoute
+  '/dashboard/company': typeof AuthenticatedDashboardCompanyRoute
+  '/dashboard/developer': typeof AuthenticatedDashboardDeveloperRoute
+  '/face/register': typeof AuthenticatedFaceRegisterRoute
+  '/face/verify': typeof AuthenticatedFaceVerifyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/dashboard/company': typeof DashboardCompanyRoute
-  '/dashboard/developer': typeof DashboardDeveloperRoute
-  '/face/register': typeof FaceRegisterRoute
-  '/face/verify': typeof FaceVerifyRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/login/company': typeof LoginCompanyRoute
   '/login/developer': typeof LoginDeveloperRoute
   '/login/employee': typeof LoginEmployeeRoute
+  '/dashboard/company': typeof AuthenticatedDashboardCompanyRoute
+  '/dashboard/developer': typeof AuthenticatedDashboardDeveloperRoute
+  '/face/register': typeof AuthenticatedFaceRegisterRoute
+  '/face/verify': typeof AuthenticatedFaceVerifyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/dashboard/company': typeof DashboardCompanyRoute
-  '/dashboard/developer': typeof DashboardDeveloperRoute
-  '/face/register': typeof FaceRegisterRoute
-  '/face/verify': typeof FaceVerifyRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/login/company': typeof LoginCompanyRoute
   '/login/developer': typeof LoginDeveloperRoute
   '/login/employee': typeof LoginEmployeeRoute
+  '/_authenticated/dashboard/company': typeof AuthenticatedDashboardCompanyRoute
+  '/_authenticated/dashboard/developer': typeof AuthenticatedDashboardDeveloperRoute
+  '/_authenticated/face/register': typeof AuthenticatedFaceRegisterRoute
+  '/_authenticated/face/verify': typeof AuthenticatedFaceVerifyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/forgot-password'
+    | '/reset-password'
+    | '/login/company'
+    | '/login/developer'
+    | '/login/employee'
     | '/dashboard/company'
     | '/dashboard/developer'
     | '/face/register'
     | '/face/verify'
-    | '/login/company'
-    | '/login/developer'
-    | '/login/employee'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/forgot-password'
+    | '/reset-password'
+    | '/login/company'
+    | '/login/developer'
+    | '/login/employee'
     | '/dashboard/company'
     | '/dashboard/developer'
     | '/face/register'
     | '/face/verify'
-    | '/login/company'
-    | '/login/developer'
-    | '/login/employee'
   id:
     | '__root__'
     | '/'
-    | '/dashboard/company'
-    | '/dashboard/developer'
-    | '/face/register'
-    | '/face/verify'
+    | '/_authenticated'
+    | '/forgot-password'
+    | '/reset-password'
     | '/login/company'
     | '/login/developer'
     | '/login/employee'
+    | '/_authenticated/dashboard/company'
+    | '/_authenticated/dashboard/developer'
+    | '/_authenticated/face/register'
+    | '/_authenticated/face/verify'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DashboardCompanyRoute: typeof DashboardCompanyRoute
-  DashboardDeveloperRoute: typeof DashboardDeveloperRoute
-  FaceRegisterRoute: typeof FaceRegisterRoute
-  FaceVerifyRoute: typeof FaceVerifyRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   LoginCompanyRoute: typeof LoginCompanyRoute
   LoginDeveloperRoute: typeof LoginDeveloperRoute
   LoginEmployeeRoute: typeof LoginEmployeeRoute
@@ -136,6 +169,27 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -164,43 +218,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginCompanyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/face/verify': {
-      id: '/face/verify'
+    '/_authenticated/face/verify': {
+      id: '/_authenticated/face/verify'
       path: '/face/verify'
       fullPath: '/face/verify'
-      preLoaderRoute: typeof FaceVerifyRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedFaceVerifyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/face/register': {
-      id: '/face/register'
+    '/_authenticated/face/register': {
+      id: '/_authenticated/face/register'
       path: '/face/register'
       fullPath: '/face/register'
-      preLoaderRoute: typeof FaceRegisterRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedFaceRegisterRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/dashboard/developer': {
-      id: '/dashboard/developer'
+    '/_authenticated/dashboard/developer': {
+      id: '/_authenticated/dashboard/developer'
       path: '/dashboard/developer'
       fullPath: '/dashboard/developer'
-      preLoaderRoute: typeof DashboardDeveloperRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedDashboardDeveloperRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/dashboard/company': {
-      id: '/dashboard/company'
+    '/_authenticated/dashboard/company': {
+      id: '/_authenticated/dashboard/company'
       path: '/dashboard/company'
       fullPath: '/dashboard/company'
-      preLoaderRoute: typeof DashboardCompanyRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedDashboardCompanyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardCompanyRoute: typeof AuthenticatedDashboardCompanyRoute
+  AuthenticatedDashboardDeveloperRoute: typeof AuthenticatedDashboardDeveloperRoute
+  AuthenticatedFaceRegisterRoute: typeof AuthenticatedFaceRegisterRoute
+  AuthenticatedFaceVerifyRoute: typeof AuthenticatedFaceVerifyRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardCompanyRoute: AuthenticatedDashboardCompanyRoute,
+  AuthenticatedDashboardDeveloperRoute: AuthenticatedDashboardDeveloperRoute,
+  AuthenticatedFaceRegisterRoute: AuthenticatedFaceRegisterRoute,
+  AuthenticatedFaceVerifyRoute: AuthenticatedFaceVerifyRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DashboardCompanyRoute: DashboardCompanyRoute,
-  DashboardDeveloperRoute: DashboardDeveloperRoute,
-  FaceRegisterRoute: FaceRegisterRoute,
-  FaceVerifyRoute: FaceVerifyRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   LoginCompanyRoute: LoginCompanyRoute,
   LoginDeveloperRoute: LoginDeveloperRoute,
   LoginEmployeeRoute: LoginEmployeeRoute,
@@ -208,13 +278,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
