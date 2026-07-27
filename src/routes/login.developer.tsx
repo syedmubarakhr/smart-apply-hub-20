@@ -30,7 +30,7 @@ function DeveloperLogin() {
         </div>
       }
     >
-      <LoginForm role="developer" redirectTo="/dashboard/developer" cta="Sign in to developer console" />
+      <LoginForm role="developer" redirectTo="/dashboard/developer" cta="Sign in to developer console" identifierLabel="Developer ID (email)" />
     </AuthShell>
   );
 }
