@@ -1,4 +1,6 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { LogOut } from "lucide-react";
+import { signOut } from "@/lib/auth";
 import {
   LayoutDashboard,
   Users,
@@ -66,6 +68,12 @@ interface Props {
 export function DashboardSidebar({ role, open, onClose }: Props) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const groups = NAV[role];
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    await signOut();
+    navigate({ to: "/login/company", replace: true });
+  }
 
   return (
     <>
@@ -137,7 +145,14 @@ export function DashboardSidebar({ role, open, onClose }: Props) {
           ))}
         </nav>
 
-        <div className="border-t border-sidebar-border p-4">
+        <div className="space-y-3 border-t border-sidebar-border p-4">
+          <button
+            onClick={handleLogout}
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-sidebar-foreground/80 transition hover:bg-sidebar-accent hover:text-sidebar-foreground"
+          >
+            <LogOut className="h-4 w-4 shrink-0" />
+            <span>Sign out</span>
+          </button>
           <div className="glass-card rounded-xl p-4">
             <p className="text-xs font-semibold text-sidebar-foreground">Need help?</p>
             <p className="mt-1 text-xs text-muted-foreground">
