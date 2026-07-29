@@ -24,7 +24,7 @@ export async function logAudit(
     await supabase.from("audit_logs").insert({
       user_id: userId,
       event,
-      metadata,
+      metadata: metadata as never,
       user_agent: typeof navigator !== "undefined" ? navigator.userAgent : null,
     });
   } catch (err) {
