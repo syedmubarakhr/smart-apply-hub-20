@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_logs: {
+        Row: {
+          created_at: string
+          event: string
+          id: string
+          ip_address: string | null
+          metadata: Json
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event?: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       face_registrations: {
         Row: {
           created_at: string
@@ -64,6 +94,8 @@ export type Database = {
           created_at: string
           display_name: string | null
           email: string | null
+          face_locked_at: string | null
+          face_verify_attempts: number
           id: string
           updated_at: string
         }
@@ -71,6 +103,8 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           email?: string | null
+          face_locked_at?: string | null
+          face_verify_attempts?: number
           id: string
           updated_at?: string
         }
@@ -78,6 +112,8 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           email?: string | null
+          face_locked_at?: string | null
+          face_verify_attempts?: number
           id?: string
           updated_at?: string
         }
