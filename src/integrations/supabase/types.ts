@@ -14,11 +14,88 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_logs: {
+        Row: {
+          created_at: string
+          event: string
+          id: string
+          ip_address: string | null
+          metadata: Json
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event?: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      face_registrations: {
+        Row: {
+          created_at: string
+          id: string
+          image_front: string
+          image_left: string
+          image_right: string
+          image_smile: string
+          image_up: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: Database["public"]["Enums"]["face_registration_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_front: string
+          image_left: string
+          image_right: string
+          image_smile: string
+          image_up: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["face_registration_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_front?: string
+          image_left?: string
+          image_right?: string
+          image_smile?: string
+          image_up?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["face_registration_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
           display_name: string | null
           email: string | null
+          face_locked_at: string | null
+          face_verify_attempts: number
           id: string
           updated_at: string
         }
@@ -26,6 +103,8 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           email?: string | null
+          face_locked_at?: string | null
+          face_verify_attempts?: number
           id: string
           updated_at?: string
         }
@@ -33,6 +112,8 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           email?: string | null
+          face_locked_at?: string | null
+          face_verify_attempts?: number
           id?: string
           updated_at?: string
         }
@@ -74,6 +155,7 @@ export type Database = {
     }
     Enums: {
       app_role: "developer" | "company" | "employee"
+      face_registration_status: "pending" | "approved" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -202,6 +284,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["developer", "company", "employee"],
+      face_registration_status: ["pending", "approved", "rejected"],
     },
   },
 } as const
