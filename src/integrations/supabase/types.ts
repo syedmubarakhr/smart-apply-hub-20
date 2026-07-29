@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      face_registrations: {
+        Row: {
+          created_at: string
+          id: string
+          image_front: string
+          image_left: string
+          image_right: string
+          image_smile: string
+          image_up: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: Database["public"]["Enums"]["face_registration_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_front: string
+          image_left: string
+          image_right: string
+          image_smile: string
+          image_up: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["face_registration_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_front?: string
+          image_left?: string
+          image_right?: string
+          image_smile?: string
+          image_up?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["face_registration_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -74,6 +119,7 @@ export type Database = {
     }
     Enums: {
       app_role: "developer" | "company" | "employee"
+      face_registration_status: "pending" | "approved" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -202,6 +248,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["developer", "company", "employee"],
+      face_registration_status: ["pending", "approved", "rejected"],
     },
   },
 } as const
