@@ -22,6 +22,16 @@ import { Route as AuthenticatedFaceLockedRouteImport } from './routes/_authentic
 import { Route as AuthenticatedDashboardDeveloperRouteImport } from './routes/_authenticated/dashboard.developer'
 import { Route as AuthenticatedDashboardCompanyRouteImport } from './routes/_authenticated/dashboard.company'
 import { Route as AuthenticatedDashboardDeveloperIndexRouteImport } from './routes/_authenticated/dashboard.developer.index'
+import { Route as AuthenticatedDashboardDeveloperUsersRouteImport } from './routes/_authenticated/dashboard.developer.users'
+import { Route as AuthenticatedDashboardDeveloperSettingsRouteImport } from './routes/_authenticated/dashboard.developer.settings'
+import { Route as AuthenticatedDashboardDeveloperRolesRouteImport } from './routes/_authenticated/dashboard.developer.roles'
+import { Route as AuthenticatedDashboardDeveloperReportsRouteImport } from './routes/_authenticated/dashboard.developer.reports'
+import { Route as AuthenticatedDashboardDeveloperPermissionsRouteImport } from './routes/_authenticated/dashboard.developer.permissions'
+import { Route as AuthenticatedDashboardDeveloperHolidaysRouteImport } from './routes/_authenticated/dashboard.developer.holidays'
+import { Route as AuthenticatedDashboardDeveloperDepartmentsRouteImport } from './routes/_authenticated/dashboard.developer.departments'
+import { Route as AuthenticatedDashboardDeveloperCompaniesRouteImport } from './routes/_authenticated/dashboard.developer.companies'
+import { Route as AuthenticatedDashboardDeveloperAuditLogsRouteImport } from './routes/_authenticated/dashboard.developer.audit-logs'
+import { Route as AuthenticatedDashboardDeveloperAiEngineRouteImport } from './routes/_authenticated/dashboard.developer.ai-engine'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -91,6 +101,66 @@ const AuthenticatedDashboardDeveloperIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardDeveloperRoute,
   } as any)
+const AuthenticatedDashboardDeveloperUsersRoute =
+  AuthenticatedDashboardDeveloperUsersRouteImport.update({
+    id: '/users',
+    path: '/users',
+    getParentRoute: () => AuthenticatedDashboardDeveloperRoute,
+  } as any)
+const AuthenticatedDashboardDeveloperSettingsRoute =
+  AuthenticatedDashboardDeveloperSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedDashboardDeveloperRoute,
+  } as any)
+const AuthenticatedDashboardDeveloperRolesRoute =
+  AuthenticatedDashboardDeveloperRolesRouteImport.update({
+    id: '/roles',
+    path: '/roles',
+    getParentRoute: () => AuthenticatedDashboardDeveloperRoute,
+  } as any)
+const AuthenticatedDashboardDeveloperReportsRoute =
+  AuthenticatedDashboardDeveloperReportsRouteImport.update({
+    id: '/reports',
+    path: '/reports',
+    getParentRoute: () => AuthenticatedDashboardDeveloperRoute,
+  } as any)
+const AuthenticatedDashboardDeveloperPermissionsRoute =
+  AuthenticatedDashboardDeveloperPermissionsRouteImport.update({
+    id: '/permissions',
+    path: '/permissions',
+    getParentRoute: () => AuthenticatedDashboardDeveloperRoute,
+  } as any)
+const AuthenticatedDashboardDeveloperHolidaysRoute =
+  AuthenticatedDashboardDeveloperHolidaysRouteImport.update({
+    id: '/holidays',
+    path: '/holidays',
+    getParentRoute: () => AuthenticatedDashboardDeveloperRoute,
+  } as any)
+const AuthenticatedDashboardDeveloperDepartmentsRoute =
+  AuthenticatedDashboardDeveloperDepartmentsRouteImport.update({
+    id: '/departments',
+    path: '/departments',
+    getParentRoute: () => AuthenticatedDashboardDeveloperRoute,
+  } as any)
+const AuthenticatedDashboardDeveloperCompaniesRoute =
+  AuthenticatedDashboardDeveloperCompaniesRouteImport.update({
+    id: '/companies',
+    path: '/companies',
+    getParentRoute: () => AuthenticatedDashboardDeveloperRoute,
+  } as any)
+const AuthenticatedDashboardDeveloperAuditLogsRoute =
+  AuthenticatedDashboardDeveloperAuditLogsRouteImport.update({
+    id: '/audit-logs',
+    path: '/audit-logs',
+    getParentRoute: () => AuthenticatedDashboardDeveloperRoute,
+  } as any)
+const AuthenticatedDashboardDeveloperAiEngineRoute =
+  AuthenticatedDashboardDeveloperAiEngineRouteImport.update({
+    id: '/ai-engine',
+    path: '/ai-engine',
+    getParentRoute: () => AuthenticatedDashboardDeveloperRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -104,6 +174,16 @@ export interface FileRoutesByFullPath {
   '/face/locked': typeof AuthenticatedFaceLockedRoute
   '/face/register': typeof AuthenticatedFaceRegisterRoute
   '/face/verify': typeof AuthenticatedFaceVerifyRoute
+  '/dashboard/developer/ai-engine': typeof AuthenticatedDashboardDeveloperAiEngineRoute
+  '/dashboard/developer/audit-logs': typeof AuthenticatedDashboardDeveloperAuditLogsRoute
+  '/dashboard/developer/companies': typeof AuthenticatedDashboardDeveloperCompaniesRoute
+  '/dashboard/developer/departments': typeof AuthenticatedDashboardDeveloperDepartmentsRoute
+  '/dashboard/developer/holidays': typeof AuthenticatedDashboardDeveloperHolidaysRoute
+  '/dashboard/developer/permissions': typeof AuthenticatedDashboardDeveloperPermissionsRoute
+  '/dashboard/developer/reports': typeof AuthenticatedDashboardDeveloperReportsRoute
+  '/dashboard/developer/roles': typeof AuthenticatedDashboardDeveloperRolesRoute
+  '/dashboard/developer/settings': typeof AuthenticatedDashboardDeveloperSettingsRoute
+  '/dashboard/developer/users': typeof AuthenticatedDashboardDeveloperUsersRoute
   '/dashboard/developer/': typeof AuthenticatedDashboardDeveloperIndexRoute
 }
 export interface FileRoutesByTo {
@@ -117,6 +197,16 @@ export interface FileRoutesByTo {
   '/face/locked': typeof AuthenticatedFaceLockedRoute
   '/face/register': typeof AuthenticatedFaceRegisterRoute
   '/face/verify': typeof AuthenticatedFaceVerifyRoute
+  '/dashboard/developer/ai-engine': typeof AuthenticatedDashboardDeveloperAiEngineRoute
+  '/dashboard/developer/audit-logs': typeof AuthenticatedDashboardDeveloperAuditLogsRoute
+  '/dashboard/developer/companies': typeof AuthenticatedDashboardDeveloperCompaniesRoute
+  '/dashboard/developer/departments': typeof AuthenticatedDashboardDeveloperDepartmentsRoute
+  '/dashboard/developer/holidays': typeof AuthenticatedDashboardDeveloperHolidaysRoute
+  '/dashboard/developer/permissions': typeof AuthenticatedDashboardDeveloperPermissionsRoute
+  '/dashboard/developer/reports': typeof AuthenticatedDashboardDeveloperReportsRoute
+  '/dashboard/developer/roles': typeof AuthenticatedDashboardDeveloperRolesRoute
+  '/dashboard/developer/settings': typeof AuthenticatedDashboardDeveloperSettingsRoute
+  '/dashboard/developer/users': typeof AuthenticatedDashboardDeveloperUsersRoute
   '/dashboard/developer': typeof AuthenticatedDashboardDeveloperIndexRoute
 }
 export interface FileRoutesById {
@@ -133,6 +223,16 @@ export interface FileRoutesById {
   '/_authenticated/face/locked': typeof AuthenticatedFaceLockedRoute
   '/_authenticated/face/register': typeof AuthenticatedFaceRegisterRoute
   '/_authenticated/face/verify': typeof AuthenticatedFaceVerifyRoute
+  '/_authenticated/dashboard/developer/ai-engine': typeof AuthenticatedDashboardDeveloperAiEngineRoute
+  '/_authenticated/dashboard/developer/audit-logs': typeof AuthenticatedDashboardDeveloperAuditLogsRoute
+  '/_authenticated/dashboard/developer/companies': typeof AuthenticatedDashboardDeveloperCompaniesRoute
+  '/_authenticated/dashboard/developer/departments': typeof AuthenticatedDashboardDeveloperDepartmentsRoute
+  '/_authenticated/dashboard/developer/holidays': typeof AuthenticatedDashboardDeveloperHolidaysRoute
+  '/_authenticated/dashboard/developer/permissions': typeof AuthenticatedDashboardDeveloperPermissionsRoute
+  '/_authenticated/dashboard/developer/reports': typeof AuthenticatedDashboardDeveloperReportsRoute
+  '/_authenticated/dashboard/developer/roles': typeof AuthenticatedDashboardDeveloperRolesRoute
+  '/_authenticated/dashboard/developer/settings': typeof AuthenticatedDashboardDeveloperSettingsRoute
+  '/_authenticated/dashboard/developer/users': typeof AuthenticatedDashboardDeveloperUsersRoute
   '/_authenticated/dashboard/developer/': typeof AuthenticatedDashboardDeveloperIndexRoute
 }
 export interface FileRouteTypes {
@@ -149,6 +249,16 @@ export interface FileRouteTypes {
     | '/face/locked'
     | '/face/register'
     | '/face/verify'
+    | '/dashboard/developer/ai-engine'
+    | '/dashboard/developer/audit-logs'
+    | '/dashboard/developer/companies'
+    | '/dashboard/developer/departments'
+    | '/dashboard/developer/holidays'
+    | '/dashboard/developer/permissions'
+    | '/dashboard/developer/reports'
+    | '/dashboard/developer/roles'
+    | '/dashboard/developer/settings'
+    | '/dashboard/developer/users'
     | '/dashboard/developer/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -162,6 +272,16 @@ export interface FileRouteTypes {
     | '/face/locked'
     | '/face/register'
     | '/face/verify'
+    | '/dashboard/developer/ai-engine'
+    | '/dashboard/developer/audit-logs'
+    | '/dashboard/developer/companies'
+    | '/dashboard/developer/departments'
+    | '/dashboard/developer/holidays'
+    | '/dashboard/developer/permissions'
+    | '/dashboard/developer/reports'
+    | '/dashboard/developer/roles'
+    | '/dashboard/developer/settings'
+    | '/dashboard/developer/users'
     | '/dashboard/developer'
   id:
     | '__root__'
@@ -177,6 +297,16 @@ export interface FileRouteTypes {
     | '/_authenticated/face/locked'
     | '/_authenticated/face/register'
     | '/_authenticated/face/verify'
+    | '/_authenticated/dashboard/developer/ai-engine'
+    | '/_authenticated/dashboard/developer/audit-logs'
+    | '/_authenticated/dashboard/developer/companies'
+    | '/_authenticated/dashboard/developer/departments'
+    | '/_authenticated/dashboard/developer/holidays'
+    | '/_authenticated/dashboard/developer/permissions'
+    | '/_authenticated/dashboard/developer/reports'
+    | '/_authenticated/dashboard/developer/roles'
+    | '/_authenticated/dashboard/developer/settings'
+    | '/_authenticated/dashboard/developer/users'
     | '/_authenticated/dashboard/developer/'
   fileRoutesById: FileRoutesById
 }
@@ -283,15 +413,115 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardDeveloperIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardDeveloperRoute
     }
+    '/_authenticated/dashboard/developer/users': {
+      id: '/_authenticated/dashboard/developer/users'
+      path: '/users'
+      fullPath: '/dashboard/developer/users'
+      preLoaderRoute: typeof AuthenticatedDashboardDeveloperUsersRouteImport
+      parentRoute: typeof AuthenticatedDashboardDeveloperRoute
+    }
+    '/_authenticated/dashboard/developer/settings': {
+      id: '/_authenticated/dashboard/developer/settings'
+      path: '/settings'
+      fullPath: '/dashboard/developer/settings'
+      preLoaderRoute: typeof AuthenticatedDashboardDeveloperSettingsRouteImport
+      parentRoute: typeof AuthenticatedDashboardDeveloperRoute
+    }
+    '/_authenticated/dashboard/developer/roles': {
+      id: '/_authenticated/dashboard/developer/roles'
+      path: '/roles'
+      fullPath: '/dashboard/developer/roles'
+      preLoaderRoute: typeof AuthenticatedDashboardDeveloperRolesRouteImport
+      parentRoute: typeof AuthenticatedDashboardDeveloperRoute
+    }
+    '/_authenticated/dashboard/developer/reports': {
+      id: '/_authenticated/dashboard/developer/reports'
+      path: '/reports'
+      fullPath: '/dashboard/developer/reports'
+      preLoaderRoute: typeof AuthenticatedDashboardDeveloperReportsRouteImport
+      parentRoute: typeof AuthenticatedDashboardDeveloperRoute
+    }
+    '/_authenticated/dashboard/developer/permissions': {
+      id: '/_authenticated/dashboard/developer/permissions'
+      path: '/permissions'
+      fullPath: '/dashboard/developer/permissions'
+      preLoaderRoute: typeof AuthenticatedDashboardDeveloperPermissionsRouteImport
+      parentRoute: typeof AuthenticatedDashboardDeveloperRoute
+    }
+    '/_authenticated/dashboard/developer/holidays': {
+      id: '/_authenticated/dashboard/developer/holidays'
+      path: '/holidays'
+      fullPath: '/dashboard/developer/holidays'
+      preLoaderRoute: typeof AuthenticatedDashboardDeveloperHolidaysRouteImport
+      parentRoute: typeof AuthenticatedDashboardDeveloperRoute
+    }
+    '/_authenticated/dashboard/developer/departments': {
+      id: '/_authenticated/dashboard/developer/departments'
+      path: '/departments'
+      fullPath: '/dashboard/developer/departments'
+      preLoaderRoute: typeof AuthenticatedDashboardDeveloperDepartmentsRouteImport
+      parentRoute: typeof AuthenticatedDashboardDeveloperRoute
+    }
+    '/_authenticated/dashboard/developer/companies': {
+      id: '/_authenticated/dashboard/developer/companies'
+      path: '/companies'
+      fullPath: '/dashboard/developer/companies'
+      preLoaderRoute: typeof AuthenticatedDashboardDeveloperCompaniesRouteImport
+      parentRoute: typeof AuthenticatedDashboardDeveloperRoute
+    }
+    '/_authenticated/dashboard/developer/audit-logs': {
+      id: '/_authenticated/dashboard/developer/audit-logs'
+      path: '/audit-logs'
+      fullPath: '/dashboard/developer/audit-logs'
+      preLoaderRoute: typeof AuthenticatedDashboardDeveloperAuditLogsRouteImport
+      parentRoute: typeof AuthenticatedDashboardDeveloperRoute
+    }
+    '/_authenticated/dashboard/developer/ai-engine': {
+      id: '/_authenticated/dashboard/developer/ai-engine'
+      path: '/ai-engine'
+      fullPath: '/dashboard/developer/ai-engine'
+      preLoaderRoute: typeof AuthenticatedDashboardDeveloperAiEngineRouteImport
+      parentRoute: typeof AuthenticatedDashboardDeveloperRoute
+    }
   }
 }
 
 interface AuthenticatedDashboardDeveloperRouteChildren {
+  AuthenticatedDashboardDeveloperAiEngineRoute: typeof AuthenticatedDashboardDeveloperAiEngineRoute
+  AuthenticatedDashboardDeveloperAuditLogsRoute: typeof AuthenticatedDashboardDeveloperAuditLogsRoute
+  AuthenticatedDashboardDeveloperCompaniesRoute: typeof AuthenticatedDashboardDeveloperCompaniesRoute
+  AuthenticatedDashboardDeveloperDepartmentsRoute: typeof AuthenticatedDashboardDeveloperDepartmentsRoute
+  AuthenticatedDashboardDeveloperHolidaysRoute: typeof AuthenticatedDashboardDeveloperHolidaysRoute
+  AuthenticatedDashboardDeveloperPermissionsRoute: typeof AuthenticatedDashboardDeveloperPermissionsRoute
+  AuthenticatedDashboardDeveloperReportsRoute: typeof AuthenticatedDashboardDeveloperReportsRoute
+  AuthenticatedDashboardDeveloperRolesRoute: typeof AuthenticatedDashboardDeveloperRolesRoute
+  AuthenticatedDashboardDeveloperSettingsRoute: typeof AuthenticatedDashboardDeveloperSettingsRoute
+  AuthenticatedDashboardDeveloperUsersRoute: typeof AuthenticatedDashboardDeveloperUsersRoute
   AuthenticatedDashboardDeveloperIndexRoute: typeof AuthenticatedDashboardDeveloperIndexRoute
 }
 
 const AuthenticatedDashboardDeveloperRouteChildren: AuthenticatedDashboardDeveloperRouteChildren =
   {
+    AuthenticatedDashboardDeveloperAiEngineRoute:
+      AuthenticatedDashboardDeveloperAiEngineRoute,
+    AuthenticatedDashboardDeveloperAuditLogsRoute:
+      AuthenticatedDashboardDeveloperAuditLogsRoute,
+    AuthenticatedDashboardDeveloperCompaniesRoute:
+      AuthenticatedDashboardDeveloperCompaniesRoute,
+    AuthenticatedDashboardDeveloperDepartmentsRoute:
+      AuthenticatedDashboardDeveloperDepartmentsRoute,
+    AuthenticatedDashboardDeveloperHolidaysRoute:
+      AuthenticatedDashboardDeveloperHolidaysRoute,
+    AuthenticatedDashboardDeveloperPermissionsRoute:
+      AuthenticatedDashboardDeveloperPermissionsRoute,
+    AuthenticatedDashboardDeveloperReportsRoute:
+      AuthenticatedDashboardDeveloperReportsRoute,
+    AuthenticatedDashboardDeveloperRolesRoute:
+      AuthenticatedDashboardDeveloperRolesRoute,
+    AuthenticatedDashboardDeveloperSettingsRoute:
+      AuthenticatedDashboardDeveloperSettingsRoute,
+    AuthenticatedDashboardDeveloperUsersRoute:
+      AuthenticatedDashboardDeveloperUsersRoute,
     AuthenticatedDashboardDeveloperIndexRoute:
       AuthenticatedDashboardDeveloperIndexRoute,
   }
