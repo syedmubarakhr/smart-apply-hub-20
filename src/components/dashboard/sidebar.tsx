@@ -4,14 +4,20 @@ import { signOut } from "@/lib/auth";
 import {
   LayoutDashboard,
   Users,
+  Users2,
   Briefcase,
   ScanFace,
   Settings,
   BarChart3,
   Building2,
-  Code2,
-  FileText,
   Shield,
+  ShieldCheck,
+  KeyRound,
+  Network,
+  CalendarDays,
+  BrainCircuit,
+  FileBarChart,
+  ScrollText,
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -23,21 +29,31 @@ const NAV: Record<SidebarRole, { section: string; items: { to: string; label: st
     {
       section: "Platform",
       items: [
-        { to: "/dashboard/developer", label: "Overview", icon: LayoutDashboard },
-        { to: "/dashboard/developer", label: "Tenants", icon: Building2 },
-        { to: "/dashboard/developer", label: "API Keys", icon: Code2 },
-        { to: "/dashboard/developer", label: "Analytics", icon: BarChart3 },
+        { to: "/dashboard/developer", label: "Dashboard", icon: LayoutDashboard },
+        { to: "/dashboard/developer/companies", label: "Companies", icon: Building2 },
+        { to: "/dashboard/developer/users", label: "Users", icon: Users2 },
+      ],
+    },
+    {
+      section: "Access control",
+      items: [
+        { to: "/dashboard/developer/roles", label: "Roles", icon: ShieldCheck },
+        { to: "/dashboard/developer/permissions", label: "Permissions", icon: KeyRound },
+        { to: "/dashboard/developer/departments", label: "Departments", icon: Network },
+        { to: "/dashboard/developer/holidays", label: "Holiday Management", icon: CalendarDays },
       ],
     },
     {
       section: "System",
       items: [
-        { to: "/dashboard/developer", label: "Audit Logs", icon: FileText },
-        { to: "/dashboard/developer", label: "Security", icon: Shield },
-        { to: "/dashboard/developer", label: "Settings", icon: Settings },
+        { to: "/dashboard/developer/ai-engine", label: "AI Engine", icon: BrainCircuit },
+        { to: "/dashboard/developer/reports", label: "Reports", icon: FileBarChart },
+        { to: "/dashboard/developer/audit-logs", label: "Audit Logs", icon: ScrollText },
+        { to: "/dashboard/developer/settings", label: "Settings", icon: Settings },
       ],
     },
   ],
+
   company: [
     {
       section: "Hiring",
