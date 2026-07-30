@@ -10,7 +10,6 @@ import {
   Settings,
   BarChart3,
   Building2,
-  FileText,
   Shield,
   ShieldCheck,
   KeyRound,
