@@ -44,6 +44,57 @@ export type Database = {
         }
         Relationships: []
       }
+      companies: {
+        Row: {
+          admin_email: string
+          admin_name: string
+          auth_user_id: string | null
+          code: string
+          country: string
+          created_at: string
+          created_by: string | null
+          id: string
+          login_id: string
+          logo_url: string | null
+          name: string
+          status: Database["public"]["Enums"]["company_status"]
+          timezone: string
+          updated_at: string
+        }
+        Insert: {
+          admin_email?: string
+          admin_name?: string
+          auth_user_id?: string | null
+          code: string
+          country?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          login_id: string
+          logo_url?: string | null
+          name: string
+          status?: Database["public"]["Enums"]["company_status"]
+          timezone?: string
+          updated_at?: string
+        }
+        Update: {
+          admin_email?: string
+          admin_name?: string
+          auth_user_id?: string | null
+          code?: string
+          country?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          login_id?: string
+          logo_url?: string | null
+          name?: string
+          status?: Database["public"]["Enums"]["company_status"]
+          timezone?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       face_registrations: {
         Row: {
           created_at: string
@@ -155,6 +206,7 @@ export type Database = {
     }
     Enums: {
       app_role: "developer" | "company" | "employee"
+      company_status: "active" | "suspended"
       face_registration_status: "pending" | "approved" | "rejected"
     }
     CompositeTypes: {
@@ -284,6 +336,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["developer", "company", "employee"],
+      company_status: ["active", "suspended"],
       face_registration_status: ["pending", "approved", "rejected"],
     },
   },
