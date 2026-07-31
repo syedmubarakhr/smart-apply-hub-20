@@ -1,60 +1,17 @@
 import { createServerFn } from "@tanstack/react-start";
-import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import {
+  COMPANY_COLUMNS,
+  assertDeveloper,
+  createSchema,
+  idSchema,
+  listSchema,
+  statusSchema,
+  updateSchema,
+  type CompanyRow,
+} from "@/lib/companies.shared";
 
-export interface CompanyRow {
-  id: string;
-  name: string;
-  code: string;
-  login_id: string;
-  country: string;
-  timezone: string;
-  logo_url: string | null;
-  status: "active" | "suspended";
-  admin_name: string;
-  admin_email: string;
-  created_at: string;
-}
-
-const listSchema = z.object({
-  search: z.string().optional().default(""),
-  status: z.string().optional().default("all"),
-  country: z.string().optional().default("all"),
-  page: z.number().int().optional().default(1),
-  pageSize: z.number().int().optional().default(10),
-});
-
-const baseCompany = {
-  name: z.string().trim().min(2).max(120),
-  code: z.string().trim().min(2).max(40),
-  login_id: z.string().trim().email().max(255),
-  country: z.string().trim().max(80).default(""),
-  timezone: z.string().trim().max(80).default("UTC"),
-  logo_url: z.string().max(400_000).nullable().optional(),
-  status: z.enum(["active", "suspended"]).default("active"),
-  admin_name: z.string().trim().max(120).default(""),
-  admin_email: z.string().trim().max(255).default(""),
-};
-
-const createSchema = z.object({
-  ...baseCompany,
-  password: z.string().min(8).max(72),
-});
-
-const updateSchema = z.object({
-  id: z.string().uuid(),
-  ...baseCompany,
-  password: z.string().max(72).optional(),
-});
-
-async function assertDeveloper(supabase: any, userId: string) {
-  const { data, error } = await supabase.rpc("has_role", {
-    _user_id: userId,
-    _role: "developer",
-  });
-  if (error) throw new Error(error.message);
-  if (!data) throw new Error("Forbidden: developer role required");
-}
+export type { CompanyRow };
 
 export const listCompanies = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -68,14 +25,11 @@ export const listCompanies = createServerFn({ method: "GET" })
 
     let query = context.supabase
       .from("companies")
-      .select(
-        "id,name,code,login_id,country,timezone,logo_url,status,admin_name,admin_email,created_at",
-        { count: "exact" },
-      )
+      .select(COMPANY_COLUMNS, { count: "exact" })
       .order("created_at", { ascending: false })
       .range(from, from + pageSize - 1);
 
-    const search = data.search.trim().slice(0, 100);
+    const search = data.search.trim().slice(0, 100).replace(/[,()]/g, "");
     if (search) {
       query = query.or(
         `name.ilike.%${search}%,code.ilike.%${search}%,login_id.ilike.%${search}%,admin_email.ilike.%${search}%`,
@@ -88,15 +42,10 @@ export const listCompanies = createServerFn({ method: "GET" })
       query = query.eq("country", data.country);
     }
 
-    const { data: rows, count, error } = await query;
+    const { data: rows, count, error } = await query.returns<CompanyRow[]>();
     if (error) throw new Error(error.message);
 
-    return {
-      rows: (rows ?? []) as CompanyRow[],
-      total: count ?? 0,
-      page,
-      pageSize,
-    };
+    return { rows: rows ?? [], total: count ?? 0, page, pageSize };
   });
 
 export const listCompanyCountries = createServerFn({ method: "GET" })
@@ -106,9 +55,10 @@ export const listCompanyCountries = createServerFn({ method: "GET" })
     const { data, error } = await context.supabase
       .from("companies")
       .select("country")
-      .neq("country", "");
+      .neq("country", "")
+      .returns<{ country: string }[]>();
     if (error) throw new Error(error.message);
-    return Array.from(new Set((data ?? []).map((r: any) => r.country as string))).sort();
+    return Array.from(new Set((data ?? []).map((r) => r.country))).sort();
   });
 
 export const createCompany = createServerFn({ method: "POST" })
@@ -139,9 +89,7 @@ export const createCompany = createServerFn({ method: "POST" })
       .single();
 
     if (error) {
-      if (created.data.user?.id) {
-        await supabaseAdmin.auth.admin.deleteUser(created.data.user.id);
-      }
+      if (created.data.user?.id) await supabaseAdmin.auth.admin.deleteUser(created.data.user.id);
       throw new Error(error.message);
     }
 
@@ -165,9 +113,8 @@ export const updateCompany = createServerFn({ method: "POST" })
     if (readError) throw new Error(readError.message);
 
     const authUserId = existing?.auth_user_id as string | null;
-    if (authUserId && (password || company.login_id)) {
-      const attrs: Record<string, string> = {};
-      if (company.login_id) attrs.email = company.login_id;
+    if (authUserId) {
+      const attrs: { email?: string; password?: string } = { email: company.login_id };
       if (password) attrs.password = password;
       const { error } = await supabaseAdmin.auth.admin.updateUserById(authUserId, attrs);
       if (error) throw new Error(error.message);
@@ -180,9 +127,7 @@ export const updateCompany = createServerFn({ method: "POST" })
 
 export const setCompanyStatus = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: unknown) =>
-    z.object({ id: z.string().uuid(), status: z.enum(["active", "suspended"]) }).parse(d),
-  )
+  .inputValidator((d: unknown) => statusSchema.parse(d))
   .handler(async ({ data, context }) => {
     await assertDeveloper(context.supabase, context.userId);
     const { error } = await context.supabase
@@ -195,7 +140,7 @@ export const setCompanyStatus = createServerFn({ method: "POST" })
 
 export const deleteCompany = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: unknown) => z.object({ id: z.string().uuid() }).parse(d))
+  .inputValidator((d: unknown) => idSchema.parse(d))
   .handler(async ({ data, context }) => {
     await assertDeveloper(context.supabase, context.userId);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
