@@ -417,7 +417,10 @@ function Page() {
         }}
         company={editing}
         saving={saveMutation.isPending}
-        onSubmit={(values) => saveMutation.mutateAsync(values).catch(() => undefined)}
+        onSubmit={async (values) => {
+          await saveMutation.mutateAsync(values).catch(() => undefined);
+        }}
+
       />
 
       <AlertDialog
