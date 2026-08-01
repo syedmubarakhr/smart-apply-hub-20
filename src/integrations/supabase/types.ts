@@ -95,6 +95,50 @@ export type Database = {
         }
         Relationships: []
       }
+      departments: {
+        Row: {
+          code: string
+          company_id: string
+          created_at: string
+          created_by: string | null
+          description: string
+          id: string
+          name: string
+          status: Database["public"]["Enums"]["department_status"]
+          updated_at: string
+        }
+        Insert: {
+          code?: string
+          company_id: string
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          id?: string
+          name: string
+          status?: Database["public"]["Enums"]["department_status"]
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          company_id?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          id?: string
+          name?: string
+          status?: Database["public"]["Enums"]["department_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "departments_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       face_registrations: {
         Row: {
           created_at: string
@@ -207,6 +251,7 @@ export type Database = {
     Enums: {
       app_role: "developer" | "company" | "employee"
       company_status: "active" | "suspended"
+      department_status: "active" | "inactive"
       face_registration_status: "pending" | "approved" | "rejected"
     }
     CompositeTypes: {
@@ -337,6 +382,7 @@ export const Constants = {
     Enums: {
       app_role: ["developer", "company", "employee"],
       company_status: ["active", "suspended"],
+      department_status: ["active", "inactive"],
       face_registration_status: ["pending", "approved", "rejected"],
     },
   },
