@@ -214,6 +214,103 @@ export type Database = {
         }
         Relationships: []
       }
+      role_permissions: {
+        Row: {
+          can_add: boolean
+          can_approve: boolean
+          can_delete: boolean
+          can_edit: boolean
+          can_export: boolean
+          can_view: boolean
+          created_at: string
+          id: string
+          module: string
+          role_id: string
+          updated_at: string
+        }
+        Insert: {
+          can_add?: boolean
+          can_approve?: boolean
+          can_delete?: boolean
+          can_edit?: boolean
+          can_export?: boolean
+          can_view?: boolean
+          created_at?: string
+          id?: string
+          module: string
+          role_id: string
+          updated_at?: string
+        }
+        Update: {
+          can_add?: boolean
+          can_approve?: boolean
+          can_delete?: boolean
+          can_edit?: boolean
+          can_export?: boolean
+          can_view?: boolean
+          created_at?: string
+          id?: string
+          module?: string
+          role_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "role_permissions_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "roles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      roles: {
+        Row: {
+          code: string
+          company_id: string | null
+          created_at: string
+          created_by: string | null
+          description: string
+          id: string
+          name: string
+          scope: Database["public"]["Enums"]["role_scope"]
+          status: Database["public"]["Enums"]["role_status"]
+          updated_at: string
+        }
+        Insert: {
+          code?: string
+          company_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          id?: string
+          name: string
+          scope?: Database["public"]["Enums"]["role_scope"]
+          status?: Database["public"]["Enums"]["role_status"]
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          company_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          id?: string
+          name?: string
+          scope?: Database["public"]["Enums"]["role_scope"]
+          status?: Database["public"]["Enums"]["role_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "roles_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -253,6 +350,8 @@ export type Database = {
       company_status: "active" | "suspended"
       department_status: "active" | "inactive"
       face_registration_status: "pending" | "approved" | "rejected"
+      role_scope: "platform" | "company"
+      role_status: "active" | "inactive"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -384,6 +483,8 @@ export const Constants = {
       company_status: ["active", "suspended"],
       department_status: ["active", "inactive"],
       face_registration_status: ["pending", "approved", "rejected"],
+      role_scope: ["platform", "company"],
+      role_status: ["active", "inactive"],
     },
   },
 } as const
