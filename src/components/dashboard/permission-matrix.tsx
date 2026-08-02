@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import {
@@ -113,8 +114,8 @@ export function PermissionMatrix({ value, onChange, disabled }: PermissionMatrix
         </thead>
         <tbody>
           {GROUPS.map((group) => (
-            <>
-              <tr key={group} className="bg-muted/25">
+            <Fragment key={group}>
+              <tr className="bg-muted/25">
                 <td
                   colSpan={PERMISSION_ACTIONS.length + 1}
                   className="px-4 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground"
@@ -153,7 +154,7 @@ export function PermissionMatrix({ value, onChange, disabled }: PermissionMatrix
                   </tr>
                 );
               })}
-            </>
+            </Fragment>
           ))}
         </tbody>
       </table>
