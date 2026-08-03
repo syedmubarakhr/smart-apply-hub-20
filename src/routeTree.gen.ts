@@ -19,9 +19,11 @@ import { Route as LoginCompanyRouteImport } from './routes/login.company'
 import { Route as AuthenticatedFaceVerifyRouteImport } from './routes/_authenticated/face.verify'
 import { Route as AuthenticatedFaceRegisterRouteImport } from './routes/_authenticated/face.register'
 import { Route as AuthenticatedFaceLockedRouteImport } from './routes/_authenticated/face.locked'
+import { Route as AuthenticatedDashboardRecruiterRouteImport } from './routes/_authenticated/dashboard.recruiter'
 import { Route as AuthenticatedDashboardHrLeadRouteImport } from './routes/_authenticated/dashboard.hr-lead'
 import { Route as AuthenticatedDashboardDeveloperRouteImport } from './routes/_authenticated/dashboard.developer'
 import { Route as AuthenticatedDashboardCompanyRouteImport } from './routes/_authenticated/dashboard.company'
+import { Route as AuthenticatedDashboardRecruiterIndexRouteImport } from './routes/_authenticated/dashboard.recruiter.index'
 import { Route as AuthenticatedDashboardHrLeadIndexRouteImport } from './routes/_authenticated/dashboard.hr-lead.index'
 import { Route as AuthenticatedDashboardDeveloperIndexRouteImport } from './routes/_authenticated/dashboard.developer.index'
 import { Route as AuthenticatedDashboardDeveloperUsersRouteImport } from './routes/_authenticated/dashboard.developer.users'
@@ -85,6 +87,12 @@ const AuthenticatedFaceLockedRoute = AuthenticatedFaceLockedRouteImport.update({
   path: '/face/locked',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedDashboardRecruiterRoute =
+  AuthenticatedDashboardRecruiterRouteImport.update({
+    id: '/dashboard/recruiter',
+    path: '/dashboard/recruiter',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedDashboardHrLeadRoute =
   AuthenticatedDashboardHrLeadRouteImport.update({
     id: '/dashboard/hr-lead',
@@ -102,6 +110,12 @@ const AuthenticatedDashboardCompanyRoute =
     id: '/dashboard/company',
     path: '/dashboard/company',
     getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDashboardRecruiterIndexRoute =
+  AuthenticatedDashboardRecruiterIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDashboardRecruiterRoute,
   } as any)
 const AuthenticatedDashboardHrLeadIndexRoute =
   AuthenticatedDashboardHrLeadIndexRouteImport.update({
@@ -186,6 +200,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/company': typeof AuthenticatedDashboardCompanyRoute
   '/dashboard/developer': typeof AuthenticatedDashboardDeveloperRouteWithChildren
   '/dashboard/hr-lead': typeof AuthenticatedDashboardHrLeadRouteWithChildren
+  '/dashboard/recruiter': typeof AuthenticatedDashboardRecruiterRouteWithChildren
   '/face/locked': typeof AuthenticatedFaceLockedRoute
   '/face/register': typeof AuthenticatedFaceRegisterRoute
   '/face/verify': typeof AuthenticatedFaceVerifyRoute
@@ -201,6 +216,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/developer/users': typeof AuthenticatedDashboardDeveloperUsersRoute
   '/dashboard/developer/': typeof AuthenticatedDashboardDeveloperIndexRoute
   '/dashboard/hr-lead/': typeof AuthenticatedDashboardHrLeadIndexRoute
+  '/dashboard/recruiter/': typeof AuthenticatedDashboardRecruiterIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -225,6 +241,7 @@ export interface FileRoutesByTo {
   '/dashboard/developer/users': typeof AuthenticatedDashboardDeveloperUsersRoute
   '/dashboard/developer': typeof AuthenticatedDashboardDeveloperIndexRoute
   '/dashboard/hr-lead': typeof AuthenticatedDashboardHrLeadIndexRoute
+  '/dashboard/recruiter': typeof AuthenticatedDashboardRecruiterIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -238,6 +255,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/company': typeof AuthenticatedDashboardCompanyRoute
   '/_authenticated/dashboard/developer': typeof AuthenticatedDashboardDeveloperRouteWithChildren
   '/_authenticated/dashboard/hr-lead': typeof AuthenticatedDashboardHrLeadRouteWithChildren
+  '/_authenticated/dashboard/recruiter': typeof AuthenticatedDashboardRecruiterRouteWithChildren
   '/_authenticated/face/locked': typeof AuthenticatedFaceLockedRoute
   '/_authenticated/face/register': typeof AuthenticatedFaceRegisterRoute
   '/_authenticated/face/verify': typeof AuthenticatedFaceVerifyRoute
@@ -253,6 +271,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/developer/users': typeof AuthenticatedDashboardDeveloperUsersRoute
   '/_authenticated/dashboard/developer/': typeof AuthenticatedDashboardDeveloperIndexRoute
   '/_authenticated/dashboard/hr-lead/': typeof AuthenticatedDashboardHrLeadIndexRoute
+  '/_authenticated/dashboard/recruiter/': typeof AuthenticatedDashboardRecruiterIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -266,6 +285,7 @@ export interface FileRouteTypes {
     | '/dashboard/company'
     | '/dashboard/developer'
     | '/dashboard/hr-lead'
+    | '/dashboard/recruiter'
     | '/face/locked'
     | '/face/register'
     | '/face/verify'
@@ -281,6 +301,7 @@ export interface FileRouteTypes {
     | '/dashboard/developer/users'
     | '/dashboard/developer/'
     | '/dashboard/hr-lead/'
+    | '/dashboard/recruiter/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -305,6 +326,7 @@ export interface FileRouteTypes {
     | '/dashboard/developer/users'
     | '/dashboard/developer'
     | '/dashboard/hr-lead'
+    | '/dashboard/recruiter'
   id:
     | '__root__'
     | '/'
@@ -317,6 +339,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/company'
     | '/_authenticated/dashboard/developer'
     | '/_authenticated/dashboard/hr-lead'
+    | '/_authenticated/dashboard/recruiter'
     | '/_authenticated/face/locked'
     | '/_authenticated/face/register'
     | '/_authenticated/face/verify'
@@ -332,6 +355,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/developer/users'
     | '/_authenticated/dashboard/developer/'
     | '/_authenticated/dashboard/hr-lead/'
+    | '/_authenticated/dashboard/recruiter/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -416,6 +440,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFaceLockedRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/dashboard/recruiter': {
+      id: '/_authenticated/dashboard/recruiter'
+      path: '/dashboard/recruiter'
+      fullPath: '/dashboard/recruiter'
+      preLoaderRoute: typeof AuthenticatedDashboardRecruiterRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard/hr-lead': {
       id: '/_authenticated/dashboard/hr-lead'
       path: '/dashboard/hr-lead'
@@ -436,6 +467,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/company'
       preLoaderRoute: typeof AuthenticatedDashboardCompanyRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard/recruiter/': {
+      id: '/_authenticated/dashboard/recruiter/'
+      path: '/'
+      fullPath: '/dashboard/recruiter/'
+      preLoaderRoute: typeof AuthenticatedDashboardRecruiterIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardRecruiterRoute
     }
     '/_authenticated/dashboard/hr-lead/': {
       id: '/_authenticated/dashboard/hr-lead/'
@@ -584,10 +622,26 @@ const AuthenticatedDashboardHrLeadRouteWithChildren =
     AuthenticatedDashboardHrLeadRouteChildren,
   )
 
+interface AuthenticatedDashboardRecruiterRouteChildren {
+  AuthenticatedDashboardRecruiterIndexRoute: typeof AuthenticatedDashboardRecruiterIndexRoute
+}
+
+const AuthenticatedDashboardRecruiterRouteChildren: AuthenticatedDashboardRecruiterRouteChildren =
+  {
+    AuthenticatedDashboardRecruiterIndexRoute:
+      AuthenticatedDashboardRecruiterIndexRoute,
+  }
+
+const AuthenticatedDashboardRecruiterRouteWithChildren =
+  AuthenticatedDashboardRecruiterRoute._addFileChildren(
+    AuthenticatedDashboardRecruiterRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardCompanyRoute: typeof AuthenticatedDashboardCompanyRoute
   AuthenticatedDashboardDeveloperRoute: typeof AuthenticatedDashboardDeveloperRouteWithChildren
   AuthenticatedDashboardHrLeadRoute: typeof AuthenticatedDashboardHrLeadRouteWithChildren
+  AuthenticatedDashboardRecruiterRoute: typeof AuthenticatedDashboardRecruiterRouteWithChildren
   AuthenticatedFaceLockedRoute: typeof AuthenticatedFaceLockedRoute
   AuthenticatedFaceRegisterRoute: typeof AuthenticatedFaceRegisterRoute
   AuthenticatedFaceVerifyRoute: typeof AuthenticatedFaceVerifyRoute
@@ -599,6 +653,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedDashboardDeveloperRouteWithChildren,
   AuthenticatedDashboardHrLeadRoute:
     AuthenticatedDashboardHrLeadRouteWithChildren,
+  AuthenticatedDashboardRecruiterRoute:
+    AuthenticatedDashboardRecruiterRouteWithChildren,
   AuthenticatedFaceLockedRoute: AuthenticatedFaceLockedRoute,
   AuthenticatedFaceRegisterRoute: AuthenticatedFaceRegisterRoute,
   AuthenticatedFaceVerifyRoute: AuthenticatedFaceVerifyRoute,
@@ -619,3 +675,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
