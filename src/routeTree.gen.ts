@@ -19,6 +19,7 @@ import { Route as LoginCompanyRouteImport } from './routes/login.company'
 import { Route as AuthenticatedFaceVerifyRouteImport } from './routes/_authenticated/face.verify'
 import { Route as AuthenticatedFaceRegisterRouteImport } from './routes/_authenticated/face.register'
 import { Route as AuthenticatedFaceLockedRouteImport } from './routes/_authenticated/face.locked'
+import { Route as AuthenticatedDashboardHrLeadRouteImport } from './routes/_authenticated/dashboard.hr-lead'
 import { Route as AuthenticatedDashboardDeveloperRouteImport } from './routes/_authenticated/dashboard.developer'
 import { Route as AuthenticatedDashboardCompanyRouteImport } from './routes/_authenticated/dashboard.company'
 import { Route as AuthenticatedDashboardDeveloperIndexRouteImport } from './routes/_authenticated/dashboard.developer.index'
@@ -83,6 +84,12 @@ const AuthenticatedFaceLockedRoute = AuthenticatedFaceLockedRouteImport.update({
   path: '/face/locked',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedDashboardHrLeadRoute =
+  AuthenticatedDashboardHrLeadRouteImport.update({
+    id: '/dashboard/hr-lead',
+    path: '/dashboard/hr-lead',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedDashboardDeveloperRoute =
   AuthenticatedDashboardDeveloperRouteImport.update({
     id: '/dashboard/developer',
@@ -171,6 +178,7 @@ export interface FileRoutesByFullPath {
   '/login/employee': typeof LoginEmployeeRoute
   '/dashboard/company': typeof AuthenticatedDashboardCompanyRoute
   '/dashboard/developer': typeof AuthenticatedDashboardDeveloperRouteWithChildren
+  '/dashboard/hr-lead': typeof AuthenticatedDashboardHrLeadRoute
   '/face/locked': typeof AuthenticatedFaceLockedRoute
   '/face/register': typeof AuthenticatedFaceRegisterRoute
   '/face/verify': typeof AuthenticatedFaceVerifyRoute
@@ -194,6 +202,7 @@ export interface FileRoutesByTo {
   '/login/developer': typeof LoginDeveloperRoute
   '/login/employee': typeof LoginEmployeeRoute
   '/dashboard/company': typeof AuthenticatedDashboardCompanyRoute
+  '/dashboard/hr-lead': typeof AuthenticatedDashboardHrLeadRoute
   '/face/locked': typeof AuthenticatedFaceLockedRoute
   '/face/register': typeof AuthenticatedFaceRegisterRoute
   '/face/verify': typeof AuthenticatedFaceVerifyRoute
@@ -220,6 +229,7 @@ export interface FileRoutesById {
   '/login/employee': typeof LoginEmployeeRoute
   '/_authenticated/dashboard/company': typeof AuthenticatedDashboardCompanyRoute
   '/_authenticated/dashboard/developer': typeof AuthenticatedDashboardDeveloperRouteWithChildren
+  '/_authenticated/dashboard/hr-lead': typeof AuthenticatedDashboardHrLeadRoute
   '/_authenticated/face/locked': typeof AuthenticatedFaceLockedRoute
   '/_authenticated/face/register': typeof AuthenticatedFaceRegisterRoute
   '/_authenticated/face/verify': typeof AuthenticatedFaceVerifyRoute
@@ -246,6 +256,7 @@ export interface FileRouteTypes {
     | '/login/employee'
     | '/dashboard/company'
     | '/dashboard/developer'
+    | '/dashboard/hr-lead'
     | '/face/locked'
     | '/face/register'
     | '/face/verify'
@@ -269,6 +280,7 @@ export interface FileRouteTypes {
     | '/login/developer'
     | '/login/employee'
     | '/dashboard/company'
+    | '/dashboard/hr-lead'
     | '/face/locked'
     | '/face/register'
     | '/face/verify'
@@ -294,6 +306,7 @@ export interface FileRouteTypes {
     | '/login/employee'
     | '/_authenticated/dashboard/company'
     | '/_authenticated/dashboard/developer'
+    | '/_authenticated/dashboard/hr-lead'
     | '/_authenticated/face/locked'
     | '/_authenticated/face/register'
     | '/_authenticated/face/verify'
@@ -390,6 +403,13 @@ declare module '@tanstack/react-router' {
       path: '/face/locked'
       fullPath: '/face/locked'
       preLoaderRoute: typeof AuthenticatedFaceLockedRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard/hr-lead': {
+      id: '/_authenticated/dashboard/hr-lead'
+      path: '/dashboard/hr-lead'
+      fullPath: '/dashboard/hr-lead'
+      preLoaderRoute: typeof AuthenticatedDashboardHrLeadRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard/developer': {
@@ -534,6 +554,7 @@ const AuthenticatedDashboardDeveloperRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardCompanyRoute: typeof AuthenticatedDashboardCompanyRoute
   AuthenticatedDashboardDeveloperRoute: typeof AuthenticatedDashboardDeveloperRouteWithChildren
+  AuthenticatedDashboardHrLeadRoute: typeof AuthenticatedDashboardHrLeadRoute
   AuthenticatedFaceLockedRoute: typeof AuthenticatedFaceLockedRoute
   AuthenticatedFaceRegisterRoute: typeof AuthenticatedFaceRegisterRoute
   AuthenticatedFaceVerifyRoute: typeof AuthenticatedFaceVerifyRoute
@@ -543,6 +564,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardCompanyRoute: AuthenticatedDashboardCompanyRoute,
   AuthenticatedDashboardDeveloperRoute:
     AuthenticatedDashboardDeveloperRouteWithChildren,
+  AuthenticatedDashboardHrLeadRoute: AuthenticatedDashboardHrLeadRoute,
   AuthenticatedFaceLockedRoute: AuthenticatedFaceLockedRoute,
   AuthenticatedFaceRegisterRoute: AuthenticatedFaceRegisterRoute,
   AuthenticatedFaceVerifyRoute: AuthenticatedFaceVerifyRoute,

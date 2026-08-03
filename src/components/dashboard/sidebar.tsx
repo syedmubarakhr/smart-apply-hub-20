@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type SidebarRole = "developer" | "company";
+export type SidebarRole = "developer" | "company" | "hr_lead";
 
 const NAV: Record<SidebarRole, { section: string; items: { to: string; label: string; icon: React.ComponentType<{ className?: string }> }[] }[]> = {
   developer: [
