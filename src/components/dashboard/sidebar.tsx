@@ -73,6 +73,32 @@ const NAV: Record<SidebarRole, { section: string; items: { to: string; label: st
       ],
     },
   ],
+
+  hr_lead: [
+    {
+      section: "Overview",
+      items: [
+        { to: "/dashboard/hr-lead", label: "Dashboard", icon: LayoutDashboard },
+        { to: "/dashboard/hr-lead", label: "Recruiters", icon: Users2 },
+      ],
+    },
+    {
+      section: "Requisitions",
+      items: [
+        { to: "/dashboard/hr-lead", label: "Job Descriptions", icon: Briefcase },
+        { to: "/dashboard/hr-lead", label: "Candidates", icon: Users },
+        { to: "/dashboard/hr-lead", label: "Interviews", icon: CalendarDays },
+      ],
+    },
+    {
+      section: "Operations",
+      items: [
+        { to: "/dashboard/hr-lead", label: "Approvals", icon: ShieldCheck },
+        { to: "/dashboard/hr-lead", label: "Reports", icon: FileBarChart },
+        { to: "/dashboard/hr-lead", label: "Settings", icon: Settings },
+      ],
+    },
+  ],
 };
 
 interface Props {
