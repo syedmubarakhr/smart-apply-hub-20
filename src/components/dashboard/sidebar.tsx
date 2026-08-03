@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type SidebarRole = "developer" | "company" | "hr_lead";
+export type SidebarRole = "developer" | "company" | "hr_lead" | "recruiter";
 
 const NAV: Record<SidebarRole, { section: string; items: { to: string; label: string; icon: React.ComponentType<{ className?: string }> }[] }[]> = {
   developer: [
@@ -96,6 +96,32 @@ const NAV: Record<SidebarRole, { section: string; items: { to: string; label: st
         { to: "/dashboard/hr-lead", label: "Approvals", icon: ShieldCheck },
         { to: "/dashboard/hr-lead", label: "Reports", icon: FileBarChart },
         { to: "/dashboard/hr-lead", label: "Settings", icon: Settings },
+      ],
+    },
+  ],
+
+  recruiter: [
+    {
+      section: "Workspace",
+      items: [
+        { to: "/dashboard/recruiter", label: "Dashboard", icon: LayoutDashboard },
+        { to: "/dashboard/recruiter", label: "My Tasks", icon: ShieldCheck },
+      ],
+    },
+    {
+      section: "Requisitions",
+      items: [
+        { to: "/dashboard/recruiter", label: "Assigned JD", icon: Briefcase },
+        { to: "/dashboard/recruiter", label: "Candidates", icon: Users },
+        { to: "/dashboard/recruiter", label: "Interviews", icon: CalendarDays },
+        { to: "/dashboard/recruiter", label: "AI Match", icon: BrainCircuit },
+      ],
+    },
+    {
+      section: "Operations",
+      items: [
+        { to: "/dashboard/recruiter", label: "My Reports", icon: FileBarChart },
+        { to: "/dashboard/recruiter", label: "Settings", icon: Settings },
       ],
     },
   ],
