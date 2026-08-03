@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type SidebarRole = "developer" | "company";
+export type SidebarRole = "developer" | "company" | "hr_lead";
 
 const NAV: Record<SidebarRole, { section: string; items: { to: string; label: string; icon: React.ComponentType<{ className?: string }> }[] }[]> = {
   developer: [
@@ -70,6 +70,32 @@ const NAV: Record<SidebarRole, { section: string; items: { to: string; label: st
         { to: "/face/register", label: "Face Registration", icon: ScanFace },
         { to: "/face/verify", label: "Face Verification", icon: Shield },
         { to: "/dashboard/company", label: "Settings", icon: Settings },
+      ],
+    },
+  ],
+
+  hr_lead: [
+    {
+      section: "Overview",
+      items: [
+        { to: "/dashboard/hr-lead", label: "Dashboard", icon: LayoutDashboard },
+        { to: "/dashboard/hr-lead", label: "Recruiters", icon: Users2 },
+      ],
+    },
+    {
+      section: "Requisitions",
+      items: [
+        { to: "/dashboard/hr-lead", label: "Job Descriptions", icon: Briefcase },
+        { to: "/dashboard/hr-lead", label: "Candidates", icon: Users },
+        { to: "/dashboard/hr-lead", label: "Interviews", icon: CalendarDays },
+      ],
+    },
+    {
+      section: "Operations",
+      items: [
+        { to: "/dashboard/hr-lead", label: "Approvals", icon: ShieldCheck },
+        { to: "/dashboard/hr-lead", label: "Reports", icon: FileBarChart },
+        { to: "/dashboard/hr-lead", label: "Settings", icon: Settings },
       ],
     },
   ],
