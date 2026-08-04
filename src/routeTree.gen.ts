@@ -16,6 +16,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as LoginEmployeeRouteImport } from './routes/login.employee'
 import { Route as LoginDeveloperRouteImport } from './routes/login.developer'
 import { Route as LoginCompanyRouteImport } from './routes/login.company'
+import { Route as AuthenticatedEmployeeRouteImport } from './routes/_authenticated/employee'
 import { Route as AuthenticatedFaceVerifyRouteImport } from './routes/_authenticated/face.verify'
 import { Route as AuthenticatedFaceRegisterRouteImport } from './routes/_authenticated/face.register'
 import { Route as AuthenticatedFacePendingRouteImport } from './routes/_authenticated/face.pending'
@@ -71,6 +72,11 @@ const LoginCompanyRoute = LoginCompanyRouteImport.update({
   id: '/login/company',
   path: '/login/company',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedEmployeeRoute = AuthenticatedEmployeeRouteImport.update({
+  id: '/employee',
+  path: '/employee',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedFaceVerifyRoute = AuthenticatedFaceVerifyRouteImport.update({
   id: '/face/verify',
@@ -201,6 +207,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/employee': typeof AuthenticatedEmployeeRoute
   '/login/company': typeof LoginCompanyRoute
   '/login/developer': typeof LoginDeveloperRoute
   '/login/employee': typeof LoginEmployeeRoute
@@ -230,6 +237,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/employee': typeof AuthenticatedEmployeeRoute
   '/login/company': typeof LoginCompanyRoute
   '/login/developer': typeof LoginDeveloperRoute
   '/login/employee': typeof LoginEmployeeRoute
@@ -258,6 +266,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/employee': typeof AuthenticatedEmployeeRoute
   '/login/company': typeof LoginCompanyRoute
   '/login/developer': typeof LoginDeveloperRoute
   '/login/employee': typeof LoginEmployeeRoute
@@ -289,6 +298,7 @@ export interface FileRouteTypes {
     | '/'
     | '/forgot-password'
     | '/reset-password'
+    | '/employee'
     | '/login/company'
     | '/login/developer'
     | '/login/employee'
@@ -318,6 +328,7 @@ export interface FileRouteTypes {
     | '/'
     | '/forgot-password'
     | '/reset-password'
+    | '/employee'
     | '/login/company'
     | '/login/developer'
     | '/login/employee'
@@ -345,6 +356,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/forgot-password'
     | '/reset-password'
+    | '/_authenticated/employee'
     | '/login/company'
     | '/login/developer'
     | '/login/employee'
@@ -431,6 +443,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/login/company'
       preLoaderRoute: typeof LoginCompanyRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/employee': {
+      id: '/_authenticated/employee'
+      path: '/employee'
+      fullPath: '/employee'
+      preLoaderRoute: typeof AuthenticatedEmployeeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/face/verify': {
       id: '/_authenticated/face/verify'
@@ -658,6 +677,7 @@ const AuthenticatedDashboardRecruiterRouteWithChildren =
   )
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedEmployeeRoute: typeof AuthenticatedEmployeeRoute
   AuthenticatedDashboardCompanyRoute: typeof AuthenticatedDashboardCompanyRoute
   AuthenticatedDashboardDeveloperRoute: typeof AuthenticatedDashboardDeveloperRouteWithChildren
   AuthenticatedDashboardHrLeadRoute: typeof AuthenticatedDashboardHrLeadRouteWithChildren
@@ -669,6 +689,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedEmployeeRoute: AuthenticatedEmployeeRoute,
   AuthenticatedDashboardCompanyRoute: AuthenticatedDashboardCompanyRoute,
   AuthenticatedDashboardDeveloperRoute:
     AuthenticatedDashboardDeveloperRouteWithChildren,
