@@ -25,7 +25,6 @@ function FacePending() {
 
   useEffect(() => {
     let cancelled = false;
-    let timer: number | undefined;
 
     async function check() {
       const { data: userData } = await supabase.auth.getUser();
@@ -44,10 +43,10 @@ function FacePending() {
     }
 
     check();
-    timer = window.setInterval(check, 15000);
+    const interval = window.setInterval(check, 15000);
     return () => {
       cancelled = true;
-      if (timer) window.clearInterval(timer);
+      window.clearInterval(interval);
     };
   }, [navigate]);
 
