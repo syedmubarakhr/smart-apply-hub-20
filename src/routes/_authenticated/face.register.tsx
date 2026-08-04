@@ -1,12 +1,28 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
-import { ArrowLeft, Camera, CheckCircle2, ScanFace, ShieldCheck, Sparkles } from "lucide-react";
+import { useRef, useState } from "react";
+import {
+  ArrowLeft,
+  Camera,
+  CheckCircle2,
+  Loader2,
+  RotateCcw,
+  ScanFace,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { WebcamCapture, type WebcamCaptureHandle } from "@/components/webcam/webcam-capture";
+import { encryptFaceImage } from "@/lib/face-crypto";
 
 export const Route = createFileRoute("/_authenticated/face/register")({
   head: () => ({
     meta: [
       { title: "Face registration — SATS" },
-      { name: "description", content: "Enroll your face for secure biometric verification across the SATS platform." },
+      {
+        name: "description",
+        content: "Enroll your face for secure biometric verification across the SATS platform.",
+      },
       { property: "og:title", content: "Face registration — SATS" },
       { property: "og:description", content: "Enroll biometric identity for SATS." },
     ],
@@ -14,25 +30,89 @@ export const Route = createFileRoute("/_authenticated/face/register")({
   component: FaceRegister,
 });
 
-const steps = [
-  { title: "Position your face", desc: "Center yourself in the frame under even lighting." },
-  { title: "Capture angles", desc: "Follow the prompts to capture front, left, and right." },
-  { title: "Confirm & submit", desc: "Review the preview and store your secure template." },
-];
+const POSES = [
+  { key: "image_front", title: "Look straight ahead", desc: "Center your face in the circle." },
+  { key: "image_left", title: "Turn slightly left", desc: "Keep your eyes on the camera." },
+  { key: "image_right", title: "Turn slightly right", desc: "Hold still for a moment." },
+  { key: "image_up", title: "Tilt your head up", desc: "Chin slightly raised." },
+  { key: "image_smile", title: "Smile", desc: "A natural smile works best." },
+] as const;
+
+type PoseKey = (typeof POSES)[number]["key"];
 
 function FaceRegister() {
   const navigate = useNavigate();
+  const webcamRef = useRef<WebcamCaptureHandle | null>(null);
   const [step, setStep] = useState(0);
-  const [captured, setCaptured] = useState(false);
+  const [shots, setShots] = useState<Partial<Record<PoseKey, string>>>({});
+  const [flash, setFlash] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  const pose = POSES[step];
+  const complete = POSES.every((p) => shots[p.key]);
+
+  function capture() {
+    const frame = webcamRef.current?.capture();
+    if (!frame) {
+      toast.error("Camera isn't ready yet — please allow access and wait a moment.");
+      return;
+    }
+    setShots((prev) => ({ ...prev, [pose.key]: frame }));
+    setFlash(true);
+    window.setTimeout(() => {
+      setFlash(false);
+      setStep((s) => Math.min(s + 1, POSES.length - 1));
+    }, 550);
+  }
+
+  function retake(key: PoseKey, index: number) {
+    setShots((prev) => {
+      const next = { ...prev };
+      delete next[key];
+      return next;
+    });
+    setStep(index);
+  }
+
+  async function submit() {
+    setSubmitting(true);
+    try {
+      const { data: userData } = await supabase.auth.getUser();
+      const uid = userData.user?.id;
+      if (!uid) throw new Error("Your session expired. Please sign in again.");
+
+      const encrypted = await Promise.all(
+        POSES.map(async (p) => [p.key, await encryptFaceImage(uid, shots[p.key]!)] as const),
+      );
+      const payload = Object.fromEntries(encrypted) as Record<PoseKey, string>;
+
+      const { error } = await supabase.from("face_registrations").insert({
+        user_id: uid,
+        status: "pending",
+        ...payload,
+      });
+      if (error) throw new Error(error.message);
+
+      toast.success("Face registered — pending HR approval.");
+      navigate({ to: "/face/pending" });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Registration failed. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background bg-mesh">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -left-24 top-24 h-96 w-96 rounded-full bg-primary/25 blur-3xl animate-float" />
-        <div className="absolute -right-24 bottom-10 h-96 w-96 rounded-full bg-accent/25 blur-3xl animate-float" style={{ animationDelay: "2s" }} />
+        <div
+          className="absolute -right-24 bottom-10 h-96 w-96 rounded-full bg-accent/25 blur-3xl animate-float"
+          style={{ animationDelay: "2s" }}
+        />
       </div>
 
-      <div className="relative mx-auto max-w-6xl px-6 py-8">
+      <div className="relative mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
             <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-primary shadow-elegant">
@@ -49,7 +129,6 @@ function FaceRegister() {
         </div>
 
         <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_1.2fr]">
-          {/* Left: guidance */}
           <div>
             <span className="inline-flex items-center gap-2 rounded-full bg-accent/15 px-3 py-1 text-xs font-semibold text-accent">
               <Sparkles className="h-3.5 w-3.5" /> Secure biometric enrollment
@@ -58,93 +137,99 @@ function FaceRegister() {
               Register your face in under a minute.
             </h1>
             <p className="mt-3 text-muted-foreground">
-              Your biometric template is encrypted end-to-end and never leaves our verified enclaves.
+              We capture five poses, encrypt them on this device, and store them for HR approval.
             </p>
 
             <div className="mt-8 space-y-3">
-              {steps.map((s, i) => (
-                <div
-                  key={s.title}
-                  className={`glass-card flex gap-3 rounded-2xl p-4 transition ${
-                    i === step ? "ring-2 ring-primary/40" : ""
-                  }`}
-                >
+              {POSES.map((p, i) => {
+                const done = Boolean(shots[p.key]);
+                return (
                   <div
-                    className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl text-xs font-bold ${
-                      i < step
-                        ? "bg-primary text-primary-foreground"
-                        : i === step
-                        ? "bg-gradient-primary text-primary-foreground shadow-elegant"
-                        : "bg-muted text-muted-foreground"
+                    key={p.key}
+                    className={`glass-card flex items-center gap-3 rounded-2xl p-4 transition ${
+                      i === step ? "ring-2 ring-primary/40" : ""
                     }`}
                   >
-                    {i < step ? <CheckCircle2 className="h-4 w-4" /> : i + 1}
+                    <div
+                      className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl text-xs font-bold ${
+                        done
+                          ? "bg-primary text-primary-foreground"
+                          : i === step
+                            ? "bg-gradient-primary text-primary-foreground shadow-elegant"
+                            : "bg-muted text-muted-foreground"
+                      }`}
+                    >
+                      {done ? <CheckCircle2 className="h-4 w-4" /> : i + 1}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-foreground">{p.title}</p>
+                      <p className="text-sm text-muted-foreground">{p.desc}</p>
+                    </div>
+                    {done && (
+                      <button
+                        onClick={() => retake(p.key, i)}
+                        className="inline-flex items-center gap-1 rounded-lg border border-border px-2 py-1 text-xs font-semibold text-muted-foreground transition hover:text-foreground"
+                      >
+                        <RotateCcw className="h-3 w-3" /> Retake
+                      </button>
+                    )}
                   </div>
-                  <div>
-                    <p className="font-semibold text-foreground">{s.title}</p>
-                    <p className="text-sm text-muted-foreground">{s.desc}</p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="mt-6 flex items-start gap-3 rounded-2xl border border-primary/20 bg-primary/5 p-4 text-sm text-foreground/80">
               <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
               <p>
-                Your data is protected with AES-256 encryption and processed under SOC 2 & GDPR compliance.
+                Captures are encrypted with AES-256-GCM in your browser before they are stored.
               </p>
             </div>
           </div>
 
-          {/* Right: scan preview */}
           <div className="glass-card rounded-3xl p-6 shadow-elegant">
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-primary/15 via-background to-accent/15">
-              <div className="absolute inset-0 grid place-items-center">
-                <div className="relative">
-                  <div className="absolute inset-0 rounded-full bg-primary/30 animate-pulse-ring" />
-                  <div className="absolute inset-0 rounded-full bg-accent/30 animate-pulse-ring" style={{ animationDelay: "0.6s" }} />
-                  <div className="relative grid h-48 w-48 place-items-center rounded-full bg-gradient-primary shadow-elegant">
-                    <ScanFace className="h-24 w-24 text-primary-foreground" />
-                  </div>
-                </div>
-              </div>
-
-              {/* frame corners */}
-              {[
-                "left-4 top-4 border-l-2 border-t-2",
-                "right-4 top-4 border-r-2 border-t-2",
-                "left-4 bottom-4 border-l-2 border-b-2",
-                "right-4 bottom-4 border-r-2 border-b-2",
-              ].map((c) => (
-                <div key={c} className={`absolute h-8 w-8 rounded-md border-primary ${c}`} />
-              ))}
-
-              {captured && (
-                <div className="absolute inset-x-6 bottom-6 rounded-2xl glass-panel p-3 text-center text-sm font-semibold text-primary">
-                  <CheckCircle2 className="mr-1 inline h-4 w-4" /> Frame captured
-                </div>
-              )}
+            <div className="relative mx-auto aspect-square w-full max-w-md overflow-hidden rounded-full border-4 border-primary/20">
+              <WebcamCapture
+                ref={webcamRef}
+                className="h-full w-full rounded-full"
+                overlay={
+                  flash ? (
+                    <div className="absolute inset-0 grid place-items-center rounded-full bg-primary/40 backdrop-blur-sm">
+                      <CheckCircle2 className="h-16 w-16 text-primary-foreground" />
+                    </div>
+                  ) : (
+                    <div className="absolute inset-0 rounded-full ring-2 ring-primary/40" />
+                  )
+                }
+              />
             </div>
 
-            <div className="mt-6 flex flex-wrap gap-3">
+            <p className="mt-5 text-center text-sm font-semibold text-foreground">
+              Step {step + 1} of {POSES.length} — {pose.title}
+            </p>
+            <p className="text-center text-xs text-muted-foreground">{pose.desc}</p>
+
+            <div className="mt-5 flex flex-wrap gap-3">
               <button
-                onClick={() => {
-                  setCaptured(true);
-                  setTimeout(() => {
-                    setCaptured(false);
-                    setStep((s) => Math.min(s + 1, steps.length - 1));
-                  }, 700);
-                }}
-                className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-elegant transition hover:scale-[1.01]"
+                onClick={capture}
+                disabled={submitting}
+                className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-elegant transition hover:scale-[1.01] disabled:opacity-60"
               >
-                <Camera className="h-4 w-4" /> Capture frame
+                <Camera className="h-4 w-4" /> Capture {pose.title.toLowerCase()}
               </button>
               <button
-                onClick={() => navigate({ to: "/face/verify" })}
-                disabled={step < steps.length - 1}
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card/60 px-4 py-3 text-sm font-semibold transition disabled:opacity-50"
+                onClick={submit}
+                disabled={!complete || submitting}
+                className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border border-border bg-card/70 px-4 py-3 text-sm font-semibold text-foreground transition hover:bg-card disabled:opacity-50"
               >
-                Finish registration
+                {submitting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" /> Submitting…
+                  </>
+                ) : (
+                  <>
+                    <ShieldCheck className="h-4 w-4" /> Submit for approval
+                  </>
+                )}
               </button>
             </div>
           </div>
