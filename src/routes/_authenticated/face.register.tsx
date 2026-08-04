@@ -180,9 +180,7 @@ function FaceRegister() {
 
             <div className="mt-6 flex items-start gap-3 rounded-2xl border border-primary/20 bg-primary/5 p-4 text-sm text-foreground/80">
               <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
-              <p>
-                Captures are encrypted with AES-256-GCM in your browser before they are stored.
-              </p>
+              <p>Captures are encrypted with AES-256-GCM in your browser before they are stored.</p>
             </div>
           </div>
 

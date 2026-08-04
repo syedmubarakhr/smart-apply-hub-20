@@ -56,7 +56,9 @@ function ResetPassword() {
       footer={
         <div className="flex items-center justify-between">
           <span>Need help?</span>
-          <Link to="/forgot-password" className="font-semibold text-primary hover:underline">Request a new link</Link>
+          <Link to="/forgot-password" className="font-semibold text-primary hover:underline">
+            Request a new link
+          </Link>
         </div>
       }
     >
@@ -88,7 +90,9 @@ function ResetPassword() {
             </div>
           </div>
           {error && (
-            <div className="rounded-lg border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">{error}</div>
+            <div className="rounded-lg border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
+              {error}
+            </div>
           )}
           <button
             type="submit"

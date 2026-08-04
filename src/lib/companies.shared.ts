@@ -52,7 +52,12 @@ export const statusSchema = z.object({
 
 export const idSchema = z.object({ id: z.string().uuid() });
 
-type RpcClient = { rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: { message: string } | null }> };
+type RpcClient = {
+  rpc: (
+    fn: string,
+    args: Record<string, unknown>,
+  ) => Promise<{ data: unknown; error: { message: string } | null }>;
+};
 
 export async function assertDeveloper(supabase: RpcClient, userId: string) {
   const { data, error } = await supabase.rpc("has_role", {

@@ -346,7 +346,11 @@ function Page() {
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" aria-label={`Actions for ${row.name}`}>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            aria-label={`Actions for ${row.name}`}
+                          >
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -420,7 +424,6 @@ function Page() {
         onSubmit={async (values) => {
           await saveMutation.mutateAsync(values).catch(() => undefined);
         }}
-
       />
 
       <AlertDialog
@@ -431,8 +434,8 @@ function Page() {
           <AlertDialogHeader>
             <AlertDialogTitle>Delete {pendingDelete?.name}?</AlertDialogTitle>
             <AlertDialogDescription>
-              This permanently removes the company record and its company login account. This
-              action cannot be undone.
+              This permanently removes the company record and its company login account. This action
+              cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -441,9 +444,7 @@ function Page() {
               onClick={() => pendingDelete && deleteMutation.mutate(pendingDelete)}
               disabled={deleteMutation.isPending}
             >
-              {deleteMutation.isPending ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : null}
+              {deleteMutation.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>

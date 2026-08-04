@@ -24,7 +24,13 @@ import { cn } from "@/lib/utils";
 
 export type SidebarRole = "developer" | "company" | "hr_lead" | "recruiter";
 
-const NAV: Record<SidebarRole, { section: string; items: { to: string; label: string; icon: React.ComponentType<{ className?: string }> }[] }[]> = {
+const NAV: Record<
+  SidebarRole,
+  {
+    section: string;
+    items: { to: string; label: string; icon: React.ComponentType<{ className?: string }> }[];
+  }[]
+> = {
   developer: [
     {
       section: "Platform",

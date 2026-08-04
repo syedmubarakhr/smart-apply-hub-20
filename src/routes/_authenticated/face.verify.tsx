@@ -4,12 +4,16 @@ import { ArrowLeft, ScanFace, ShieldCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { FaceVerificationPanel } from "@/components/face/face-verification-panel";
 import { logAudit } from "@/lib/audit";
+import { fetchRole } from "@/lib/role-home";
 
 export const Route = createFileRoute("/_authenticated/face/verify")({
   head: () => ({
     meta: [
       { title: "Face verification — SATS" },
-      { name: "description", content: "Verify your identity with biometric liveness detection to continue securely." },
+      {
+        name: "description",
+        content: "Verify your identity with biometric liveness detection to continue securely.",
+      },
       { property: "og:title", content: "Face verification — SATS" },
       { property: "og:description", content: "Biometric verification for SATS." },
     ],
@@ -41,6 +45,20 @@ function FaceVerify() {
         navigate({ to: "/face/locked" });
         return;
       }
+      const { data: registration } = await supabase
+        .from("face_registrations")
+        .select("status")
+        .eq("user_id", uid)
+        .maybeSingle();
+      if (cancelled) return;
+      if (!registration) {
+        navigate({ to: "/face/register" });
+        return;
+      }
+      if (registration.status !== "approved") {
+        navigate({ to: "/face/pending" });
+        return;
+      }
       setUserId(uid);
       setAttempts(profile?.face_verify_attempts ?? 0);
       setLoading(false);
@@ -55,12 +73,16 @@ function FaceVerify() {
 
   async function handleVerified() {
     if (!userId) return;
-    await supabase
-      .from("profiles")
-      .update({ face_verify_attempts: 0 })
-      .eq("id", userId);
+    await supabase.from("profiles").update({ face_verify_attempts: 0 }).eq("id", userId);
     await logAudit("face_verify_success", { attempts });
-    setTimeout(() => navigate({ to: "/dashboard/company" }), 900);
+    const role = await fetchRole(userId);
+    const destination =
+      role === "developer"
+        ? "/dashboard/developer"
+        : role === "company"
+          ? "/dashboard/company"
+          : "/dashboard/recruiter";
+    setTimeout(() => navigate({ to: destination }), 900);
   }
 
   async function handleFailed() {
@@ -77,10 +99,7 @@ function FaceVerify() {
       navigate({ to: "/face/locked" });
       return;
     }
-    await supabase
-      .from("profiles")
-      .update({ face_verify_attempts: next })
-      .eq("id", userId);
+    await supabase.from("profiles").update({ face_verify_attempts: next }).eq("id", userId);
   }
 
   return (

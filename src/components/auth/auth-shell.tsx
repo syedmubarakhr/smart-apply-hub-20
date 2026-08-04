@@ -11,12 +11,22 @@ interface Props {
   footer?: ReactNode;
 }
 
-export function AuthShell({ eyebrow, title, description, accent = "blue", children, footer }: Props) {
+export function AuthShell({
+  eyebrow,
+  title,
+  description,
+  accent = "blue",
+  children,
+  footer,
+}: Props) {
   return (
     <div className="relative min-h-screen overflow-hidden bg-background bg-mesh">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -left-32 top-24 h-96 w-96 rounded-full bg-primary/25 blur-3xl animate-float" />
-        <div className="absolute -right-24 bottom-10 h-[28rem] w-[28rem] rounded-full bg-accent/25 blur-3xl animate-float" style={{ animationDelay: "2s" }} />
+        <div
+          className="absolute -right-24 bottom-10 h-[28rem] w-[28rem] rounded-full bg-accent/25 blur-3xl animate-float"
+          style={{ animationDelay: "2s" }}
+        />
       </div>
 
       <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col px-6 py-6">
@@ -38,12 +48,12 @@ export function AuthShell({ eyebrow, title, description, accent = "blue", childr
         <div className="flex flex-1 items-center justify-center py-10">
           <div className="grid w-full max-w-5xl gap-10 lg:grid-cols-2 lg:items-center">
             <div className="hidden lg:block">
-              <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${accent === "orange" ? "bg-accent/15 text-accent" : "bg-primary/10 text-primary"}`}>
+              <span
+                className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${accent === "orange" ? "bg-accent/15 text-accent" : "bg-primary/10 text-primary"}`}
+              >
                 {eyebrow}
               </span>
-              <h1 className="mt-4 font-display text-4xl font-bold leading-tight">
-                {title}
-              </h1>
+              <h1 className="mt-4 font-display text-4xl font-bold leading-tight">{title}</h1>
               <p className="mt-3 max-w-md text-base text-muted-foreground">{description}</p>
 
               <div className="mt-8 space-y-3">
@@ -53,7 +63,9 @@ export function AuthShell({ eyebrow, title, description, accent = "blue", childr
                   "Real-time analytics across every hiring pipeline",
                 ].map((f) => (
                   <div key={f} className="flex items-start gap-3 rounded-2xl glass-card p-3">
-                    <div className={`mt-0.5 h-2 w-2 shrink-0 rounded-full ${accent === "orange" ? "bg-accent" : "bg-primary"}`} />
+                    <div
+                      className={`mt-0.5 h-2 w-2 shrink-0 rounded-full ${accent === "orange" ? "bg-accent" : "bg-primary"}`}
+                    />
                     <p className="text-sm text-foreground/80">{f}</p>
                   </div>
                 ))}
@@ -62,14 +74,20 @@ export function AuthShell({ eyebrow, title, description, accent = "blue", childr
 
             <div className="glass-card rounded-3xl p-8 shadow-elegant">
               <div className="lg:hidden">
-                <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${accent === "orange" ? "bg-accent/15 text-accent" : "bg-primary/10 text-primary"}`}>
+                <span
+                  className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${accent === "orange" ? "bg-accent/15 text-accent" : "bg-primary/10 text-primary"}`}
+                >
                   {eyebrow}
                 </span>
                 <h1 className="mt-3 font-display text-2xl font-bold">{title}</h1>
                 <p className="mt-1 text-sm text-muted-foreground">{description}</p>
               </div>
               <div className="mt-6 lg:mt-0">{children}</div>
-              {footer ? <div className="mt-6 border-t border-border pt-4 text-sm text-muted-foreground">{footer}</div> : null}
+              {footer ? (
+                <div className="mt-6 border-t border-border pt-4 text-sm text-muted-foreground">
+                  {footer}
+                </div>
+              ) : null}
             </div>
           </div>
         </div>

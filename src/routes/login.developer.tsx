@@ -6,7 +6,10 @@ export const Route = createFileRoute("/login/developer")({
   head: () => ({
     meta: [
       { title: "Developer sign in — SATS" },
-      { name: "description", content: "Sign in to the SATS developer console to manage tenants, integrations, and APIs." },
+      {
+        name: "description",
+        content: "Sign in to the SATS developer console to manage tenants, integrations, and APIs.",
+      },
       { property: "og:title", content: "Developer sign in — SATS" },
       { property: "og:description", content: "Sign in to the SATS developer console." },
     ],
@@ -24,13 +27,22 @@ function DeveloperLogin() {
         <div className="flex items-center justify-between">
           <span>Not a developer?</span>
           <div className="flex gap-3">
-            <Link to="/login/company" className="font-semibold text-primary hover:underline">Company</Link>
-            <Link to="/login/employee" className="font-semibold text-primary hover:underline">Employee</Link>
+            <Link to="/login/company" className="font-semibold text-primary hover:underline">
+              Company
+            </Link>
+            <Link to="/login/employee" className="font-semibold text-primary hover:underline">
+              Employee
+            </Link>
           </div>
         </div>
       }
     >
-      <LoginForm role="developer" redirectTo="/dashboard/developer" cta="Sign in to developer console" identifierLabel="Developer ID (email)" />
+      <LoginForm
+        role="developer"
+        redirectTo="/dashboard/developer"
+        cta="Sign in to developer console"
+        identifierLabel="Developer ID (email)"
+      />
     </AuthShell>
   );
 }

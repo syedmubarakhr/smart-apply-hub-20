@@ -40,7 +40,9 @@ function ForgotPassword() {
       footer={
         <div className="flex items-center justify-between">
           <span>Remembered it?</span>
-          <Link to="/login/company" className="font-semibold text-primary hover:underline">Back to sign in</Link>
+          <Link to="/login/company" className="font-semibold text-primary hover:underline">
+            Back to sign in
+          </Link>
         </div>
       }
     >
@@ -67,7 +69,9 @@ function ForgotPassword() {
             </div>
           </div>
           {error && (
-            <div className="rounded-lg border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">{error}</div>
+            <div className="rounded-lg border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
+              {error}
+            </div>
           )}
           <button
             type="submit"

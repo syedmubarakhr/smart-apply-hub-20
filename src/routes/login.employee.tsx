@@ -6,7 +6,11 @@ export const Route = createFileRoute("/login/employee")({
   head: () => ({
     meta: [
       { title: "Employee sign in — SATS" },
-      { name: "description", content: "Sign in as an applicant or employee to track your application status and verify your identity." },
+      {
+        name: "description",
+        content:
+          "Sign in as an applicant or employee to track your application status and verify your identity.",
+      },
       { property: "og:title", content: "Employee sign in — SATS" },
       { property: "og:description", content: "Sign in to the SATS employee portal." },
     ],
@@ -24,11 +28,19 @@ function EmployeeLogin() {
       footer={
         <div className="flex items-center justify-between">
           <span>Need to verify?</span>
-          <Link to="/face/register" className="font-semibold text-accent hover:underline">Register your face</Link>
+          <Link to="/face/register" className="font-semibold text-accent hover:underline">
+            Register your face
+          </Link>
         </div>
       }
     >
-      <LoginForm role="employee" redirectTo="/employee" cta="Sign in to portal" accent="orange" identifierLabel="Username (email)" />
+      <LoginForm
+        role="employee"
+        redirectTo="/employee"
+        cta="Sign in to portal"
+        accent="orange"
+        identifierLabel="Username (email)"
+      />
     </AuthShell>
   );
 }

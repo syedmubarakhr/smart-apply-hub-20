@@ -8,7 +8,10 @@ export const Route = createFileRoute("/_authenticated/dashboard/company")({
   head: () => ({
     meta: [
       { title: "Company dashboard — SATS" },
-      { name: "description", content: "Track candidates, jobs, and hiring performance across your organization." },
+      {
+        name: "description",
+        content: "Track candidates, jobs, and hiring performance across your organization.",
+      },
       { property: "og:title", content: "Company dashboard — SATS" },
       { property: "og:description", content: "Company workspace overview." },
     ],
@@ -44,8 +47,12 @@ function CompanyDashboard() {
                 return (
                   <div key={s.label} className="glass-card rounded-2xl p-5">
                     <div className="flex items-center justify-between">
-                      <p className="text-xs uppercase tracking-widest text-muted-foreground">{s.label}</p>
-                      <div className={`grid h-9 w-9 place-items-center rounded-xl text-primary-foreground shadow-elegant ${s.tone === "accent" ? "bg-gradient-accent" : "bg-gradient-primary"}`}>
+                      <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                        {s.label}
+                      </p>
+                      <div
+                        className={`grid h-9 w-9 place-items-center rounded-xl text-primary-foreground shadow-elegant ${s.tone === "accent" ? "bg-gradient-accent" : "bg-gradient-primary"}`}
+                      >
                         <Icon className="h-4 w-4" />
                       </div>
                     </div>
@@ -59,11 +66,18 @@ function CompanyDashboard() {
             <div className="mt-6 grid gap-4 lg:grid-cols-3">
               <div className="glass-card rounded-2xl p-6 lg:col-span-2">
                 <h2 className="font-display text-lg font-bold">Pipeline flow</h2>
-                <p className="mt-1 text-sm text-muted-foreground">Kanban of candidates by stage will render here.</p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Kanban of candidates by stage will render here.
+                </p>
                 <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-4">
                   {["Applied", "Screening", "Interview", "Offer"].map((stage) => (
-                    <div key={stage} className="rounded-xl border border-dashed border-border bg-background/40 p-4">
-                      <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{stage}</p>
+                    <div
+                      key={stage}
+                      className="rounded-xl border border-dashed border-border bg-background/40 p-4"
+                    >
+                      <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                        {stage}
+                      </p>
                       <p className="mt-8 text-center text-sm text-muted-foreground">Empty</p>
                     </div>
                   ))}
@@ -71,7 +85,9 @@ function CompanyDashboard() {
               </div>
               <div className="glass-card rounded-2xl p-6">
                 <h2 className="font-display text-lg font-bold">Upcoming interviews</h2>
-                <p className="mt-1 text-sm text-muted-foreground">Scheduled sessions will appear here.</p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Scheduled sessions will appear here.
+                </p>
                 <div className="mt-6 grid h-64 place-items-center rounded-xl border border-dashed border-border bg-background/40 text-sm text-muted-foreground">
                   Nothing scheduled
                 </div>

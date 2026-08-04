@@ -2,15 +2,7 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  Loader2,
-  MoreHorizontal,
-  Pencil,
-  Plus,
-  Search,
-  ShieldCheck,
-  Trash2,
-} from "lucide-react";
+import { Loader2, MoreHorizontal, Pencil, Plus, Search, ShieldCheck, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -408,8 +400,8 @@ function Page() {
           <AlertDialogHeader>
             <AlertDialogTitle>Delete {pendingDelete?.name}?</AlertDialogTitle>
             <AlertDialogDescription>
-              This permanently removes the role and all of its permission grants. This action
-              cannot be undone.
+              This permanently removes the role and all of its permission grants. This action cannot
+              be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

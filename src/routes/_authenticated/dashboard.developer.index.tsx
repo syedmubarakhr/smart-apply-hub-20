@@ -1,12 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  Activity,
-  Building2,
-  CreditCard,
-  LogIn,
-  ServerCog,
-  Users2,
-} from "lucide-react";
+import { Activity, Building2, CreditCard, LogIn, ServerCog, Users2 } from "lucide-react";
 import {
   Area,
   AreaChart,
@@ -106,10 +99,28 @@ function DeveloperDashboard() {
           >
             <AreaChart data={EMPTY}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
-              <XAxis dataKey="label" stroke="var(--muted-foreground)" fontSize={11} tickLine={false} axisLine={false} />
-              <YAxis stroke="var(--muted-foreground)" fontSize={11} tickLine={false} axisLine={false} width={32} />
+              <XAxis
+                dataKey="label"
+                stroke="var(--muted-foreground)"
+                fontSize={11}
+                tickLine={false}
+                axisLine={false}
+              />
+              <YAxis
+                stroke="var(--muted-foreground)"
+                fontSize={11}
+                tickLine={false}
+                axisLine={false}
+                width={32}
+              />
               <Tooltip />
-              <Area type="monotone" dataKey="value" stroke="var(--primary)" fill="var(--primary)" fillOpacity={0.15} />
+              <Area
+                type="monotone"
+                dataKey="value"
+                stroke="var(--primary)"
+                fill="var(--primary)"
+                fillOpacity={0.15}
+              />
             </AreaChart>
           </ChartFrame>
         </div>
@@ -120,8 +131,20 @@ function DeveloperDashboard() {
         >
           <BarChart data={EMPTY}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
-            <XAxis dataKey="label" stroke="var(--muted-foreground)" fontSize={11} tickLine={false} axisLine={false} />
-            <YAxis stroke="var(--muted-foreground)" fontSize={11} tickLine={false} axisLine={false} width={32} />
+            <XAxis
+              dataKey="label"
+              stroke="var(--muted-foreground)"
+              fontSize={11}
+              tickLine={false}
+              axisLine={false}
+            />
+            <YAxis
+              stroke="var(--muted-foreground)"
+              fontSize={11}
+              tickLine={false}
+              axisLine={false}
+              width={32}
+            />
             <Tooltip />
             <Bar dataKey="value" fill="var(--accent)" radius={[6, 6, 0, 0]} />
           </BarChart>

@@ -11,7 +11,13 @@ interface Props {
   identifierLabel?: string;
 }
 
-export function LoginForm({ role, redirectTo, cta, accent = "blue", identifierLabel = "Email" }: Props) {
+export function LoginForm({
+  role,
+  redirectTo,
+  cta,
+  accent = "blue",
+  identifierLabel = "Email",
+}: Props) {
   const navigate = useNavigate();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [displayName, setDisplayName] = useState("");

@@ -8,7 +8,10 @@ export const Route = createFileRoute("/_authenticated/face/locked")({
   head: () => ({
     meta: [
       { title: "Account locked — SATS" },
-      { name: "description", content: "Your account has been locked after multiple failed face verification attempts." },
+      {
+        name: "description",
+        content: "Your account has been locked after multiple failed face verification attempts.",
+      },
       { property: "og:title", content: "Account locked — SATS" },
       { property: "og:description", content: "Contact your administrator to restore access." },
     ],

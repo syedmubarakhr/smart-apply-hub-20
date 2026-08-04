@@ -15,8 +15,7 @@ export type { RoleRow, RolePermissionRow };
 
 function meaningful(permissions: RolePermissionRow[]) {
   return permissions.filter(
-    (p) =>
-      p.can_view || p.can_add || p.can_edit || p.can_delete || p.can_approve || p.can_export,
+    (p) => p.can_view || p.can_add || p.can_edit || p.can_delete || p.can_approve || p.can_export,
   );
 }
 
