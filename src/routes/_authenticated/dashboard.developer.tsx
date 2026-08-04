@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, useRouterState } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect, useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
 import { DashboardSidebar } from "@/components/dashboard/sidebar";
 import { DashboardHeader } from "@/components/dashboard/header";
@@ -51,6 +51,17 @@ const TITLES: Record<string, { title: string; subtitle: string }> = {
 };
 
 export const Route = createFileRoute("/_authenticated/dashboard/developer")({
+  ssr: false,
+  beforeLoad: async () => {
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { data } = await supabase.auth.getUser();
+    const uid = data.user?.id;
+    if (!uid) throw redirect({ to: "/login/developer" });
+    const { fetchRole } = await import("@/lib/role-home");
+    if ((await fetchRole(uid)) !== "developer") {
+      throw redirect({ to: "/" });
+    }
+  },
   component: DeveloperLayout,
 });
 

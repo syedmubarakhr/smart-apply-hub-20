@@ -112,7 +112,8 @@ export function FaceVerificationPanel({
                 </>
               ) : (
                 <>
-                  <ScanFace className="h-4 w-4" /> {phase === "failed" ? "Try again" : "Start verification"}
+                  <ScanFace className="h-4 w-4" />{" "}
+                  {phase === "failed" ? "Try again" : "Start verification"}
                 </>
               )}
             </button>

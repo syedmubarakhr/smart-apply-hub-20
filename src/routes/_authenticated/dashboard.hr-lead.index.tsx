@@ -211,7 +211,13 @@ function HrLeadDashboard() {
                 width={32}
               />
               <Tooltip />
-              <Line type="monotone" dataKey="value" stroke="var(--primary)" strokeWidth={2} dot={false} />
+              <Line
+                type="monotone"
+                dataKey="value"
+                stroke="var(--primary)"
+                strokeWidth={2}
+                dot={false}
+              />
             </LineChart>
           </ChartFrame>
         </div>

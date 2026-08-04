@@ -61,6 +61,12 @@ export const listCompanyCountries = createServerFn({ method: "GET" })
     return Array.from(new Set((data ?? []).map((r) => r.country))).sort();
   });
 
+function friendlyCompanyError(message: string): string {
+  if (message.includes("companies_code_key")) return "A company with this code already exists";
+  if (message.includes("companies_login_id_key")) return "This login ID is already in use";
+  return message;
+}
+
 export const createCompany = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => createSchema.parse(d))
@@ -90,7 +96,7 @@ export const createCompany = createServerFn({ method: "POST" })
 
     if (error) {
       if (created.data.user?.id) await supabaseAdmin.auth.admin.deleteUser(created.data.user.id);
-      throw new Error(error.message);
+      throw new Error(friendlyCompanyError(error.message));
     }
 
     return { id: row.id as string };
@@ -121,7 +127,7 @@ export const updateCompany = createServerFn({ method: "POST" })
     }
 
     const { error } = await supabaseAdmin.from("companies").update(company).eq("id", id);
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(friendlyCompanyError(error.message));
     return { ok: true };
   });
 

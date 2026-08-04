@@ -159,7 +159,8 @@ export function CompanyFormDialog({ open, onOpenChange, company, saving, onSubmi
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">
-              Company password {company ? <span className="text-muted-foreground">(optional)</span> : null}
+              Company password{" "}
+              {company ? <span className="text-muted-foreground">(optional)</span> : null}
             </Label>
             <Input
               id="password"

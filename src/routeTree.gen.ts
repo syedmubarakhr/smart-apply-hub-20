@@ -16,8 +16,10 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as LoginEmployeeRouteImport } from './routes/login.employee'
 import { Route as LoginDeveloperRouteImport } from './routes/login.developer'
 import { Route as LoginCompanyRouteImport } from './routes/login.company'
+import { Route as AuthenticatedEmployeeRouteImport } from './routes/_authenticated/employee'
 import { Route as AuthenticatedFaceVerifyRouteImport } from './routes/_authenticated/face.verify'
 import { Route as AuthenticatedFaceRegisterRouteImport } from './routes/_authenticated/face.register'
+import { Route as AuthenticatedFacePendingRouteImport } from './routes/_authenticated/face.pending'
 import { Route as AuthenticatedFaceLockedRouteImport } from './routes/_authenticated/face.locked'
 import { Route as AuthenticatedDashboardRecruiterRouteImport } from './routes/_authenticated/dashboard.recruiter'
 import { Route as AuthenticatedDashboardHrLeadRouteImport } from './routes/_authenticated/dashboard.hr-lead'
@@ -71,6 +73,11 @@ const LoginCompanyRoute = LoginCompanyRouteImport.update({
   path: '/login/company',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedEmployeeRoute = AuthenticatedEmployeeRouteImport.update({
+  id: '/employee',
+  path: '/employee',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedFaceVerifyRoute = AuthenticatedFaceVerifyRouteImport.update({
   id: '/face/verify',
   path: '/face/verify',
@@ -80,6 +87,12 @@ const AuthenticatedFaceRegisterRoute =
   AuthenticatedFaceRegisterRouteImport.update({
     id: '/face/register',
     path: '/face/register',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFacePendingRoute =
+  AuthenticatedFacePendingRouteImport.update({
+    id: '/face/pending',
+    path: '/face/pending',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedFaceLockedRoute = AuthenticatedFaceLockedRouteImport.update({
@@ -194,6 +207,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/employee': typeof AuthenticatedEmployeeRoute
   '/login/company': typeof LoginCompanyRoute
   '/login/developer': typeof LoginDeveloperRoute
   '/login/employee': typeof LoginEmployeeRoute
@@ -202,6 +216,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/hr-lead': typeof AuthenticatedDashboardHrLeadRouteWithChildren
   '/dashboard/recruiter': typeof AuthenticatedDashboardRecruiterRouteWithChildren
   '/face/locked': typeof AuthenticatedFaceLockedRoute
+  '/face/pending': typeof AuthenticatedFacePendingRoute
   '/face/register': typeof AuthenticatedFaceRegisterRoute
   '/face/verify': typeof AuthenticatedFaceVerifyRoute
   '/dashboard/developer/ai-engine': typeof AuthenticatedDashboardDeveloperAiEngineRoute
@@ -222,11 +237,13 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/employee': typeof AuthenticatedEmployeeRoute
   '/login/company': typeof LoginCompanyRoute
   '/login/developer': typeof LoginDeveloperRoute
   '/login/employee': typeof LoginEmployeeRoute
   '/dashboard/company': typeof AuthenticatedDashboardCompanyRoute
   '/face/locked': typeof AuthenticatedFaceLockedRoute
+  '/face/pending': typeof AuthenticatedFacePendingRoute
   '/face/register': typeof AuthenticatedFaceRegisterRoute
   '/face/verify': typeof AuthenticatedFaceVerifyRoute
   '/dashboard/developer/ai-engine': typeof AuthenticatedDashboardDeveloperAiEngineRoute
@@ -249,6 +266,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/employee': typeof AuthenticatedEmployeeRoute
   '/login/company': typeof LoginCompanyRoute
   '/login/developer': typeof LoginDeveloperRoute
   '/login/employee': typeof LoginEmployeeRoute
@@ -257,6 +275,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/hr-lead': typeof AuthenticatedDashboardHrLeadRouteWithChildren
   '/_authenticated/dashboard/recruiter': typeof AuthenticatedDashboardRecruiterRouteWithChildren
   '/_authenticated/face/locked': typeof AuthenticatedFaceLockedRoute
+  '/_authenticated/face/pending': typeof AuthenticatedFacePendingRoute
   '/_authenticated/face/register': typeof AuthenticatedFaceRegisterRoute
   '/_authenticated/face/verify': typeof AuthenticatedFaceVerifyRoute
   '/_authenticated/dashboard/developer/ai-engine': typeof AuthenticatedDashboardDeveloperAiEngineRoute
@@ -279,6 +298,7 @@ export interface FileRouteTypes {
     | '/'
     | '/forgot-password'
     | '/reset-password'
+    | '/employee'
     | '/login/company'
     | '/login/developer'
     | '/login/employee'
@@ -287,6 +307,7 @@ export interface FileRouteTypes {
     | '/dashboard/hr-lead'
     | '/dashboard/recruiter'
     | '/face/locked'
+    | '/face/pending'
     | '/face/register'
     | '/face/verify'
     | '/dashboard/developer/ai-engine'
@@ -307,11 +328,13 @@ export interface FileRouteTypes {
     | '/'
     | '/forgot-password'
     | '/reset-password'
+    | '/employee'
     | '/login/company'
     | '/login/developer'
     | '/login/employee'
     | '/dashboard/company'
     | '/face/locked'
+    | '/face/pending'
     | '/face/register'
     | '/face/verify'
     | '/dashboard/developer/ai-engine'
@@ -333,6 +356,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/forgot-password'
     | '/reset-password'
+    | '/_authenticated/employee'
     | '/login/company'
     | '/login/developer'
     | '/login/employee'
@@ -341,6 +365,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/hr-lead'
     | '/_authenticated/dashboard/recruiter'
     | '/_authenticated/face/locked'
+    | '/_authenticated/face/pending'
     | '/_authenticated/face/register'
     | '/_authenticated/face/verify'
     | '/_authenticated/dashboard/developer/ai-engine'
@@ -419,6 +444,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginCompanyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/employee': {
+      id: '/_authenticated/employee'
+      path: '/employee'
+      fullPath: '/employee'
+      preLoaderRoute: typeof AuthenticatedEmployeeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/face/verify': {
       id: '/_authenticated/face/verify'
       path: '/face/verify'
@@ -431,6 +463,13 @@ declare module '@tanstack/react-router' {
       path: '/face/register'
       fullPath: '/face/register'
       preLoaderRoute: typeof AuthenticatedFaceRegisterRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/face/pending': {
+      id: '/_authenticated/face/pending'
+      path: '/face/pending'
+      fullPath: '/face/pending'
+      preLoaderRoute: typeof AuthenticatedFacePendingRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/face/locked': {
@@ -638,16 +677,19 @@ const AuthenticatedDashboardRecruiterRouteWithChildren =
   )
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedEmployeeRoute: typeof AuthenticatedEmployeeRoute
   AuthenticatedDashboardCompanyRoute: typeof AuthenticatedDashboardCompanyRoute
   AuthenticatedDashboardDeveloperRoute: typeof AuthenticatedDashboardDeveloperRouteWithChildren
   AuthenticatedDashboardHrLeadRoute: typeof AuthenticatedDashboardHrLeadRouteWithChildren
   AuthenticatedDashboardRecruiterRoute: typeof AuthenticatedDashboardRecruiterRouteWithChildren
   AuthenticatedFaceLockedRoute: typeof AuthenticatedFaceLockedRoute
+  AuthenticatedFacePendingRoute: typeof AuthenticatedFacePendingRoute
   AuthenticatedFaceRegisterRoute: typeof AuthenticatedFaceRegisterRoute
   AuthenticatedFaceVerifyRoute: typeof AuthenticatedFaceVerifyRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedEmployeeRoute: AuthenticatedEmployeeRoute,
   AuthenticatedDashboardCompanyRoute: AuthenticatedDashboardCompanyRoute,
   AuthenticatedDashboardDeveloperRoute:
     AuthenticatedDashboardDeveloperRouteWithChildren,
@@ -656,6 +698,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRecruiterRoute:
     AuthenticatedDashboardRecruiterRouteWithChildren,
   AuthenticatedFaceLockedRoute: AuthenticatedFaceLockedRoute,
+  AuthenticatedFacePendingRoute: AuthenticatedFacePendingRoute,
   AuthenticatedFaceRegisterRoute: AuthenticatedFaceRegisterRoute,
   AuthenticatedFaceVerifyRoute: AuthenticatedFaceVerifyRoute,
 }

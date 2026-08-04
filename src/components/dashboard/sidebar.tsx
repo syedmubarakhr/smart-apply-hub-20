@@ -24,7 +24,13 @@ import { cn } from "@/lib/utils";
 
 export type SidebarRole = "developer" | "company" | "hr_lead" | "recruiter";
 
-const NAV: Record<SidebarRole, { section: string; items: { to: string; label: string; icon: React.ComponentType<{ className?: string }> }[] }[]> = {
+const NAV: Record<
+  SidebarRole,
+  {
+    section: string;
+    items: { to: string; label: string; icon: React.ComponentType<{ className?: string }> }[];
+  }[]
+> = {
   developer: [
     {
       section: "Platform",
@@ -140,7 +146,7 @@ export function DashboardSidebar({ role, open, onClose }: Props) {
 
   async function handleLogout() {
     await signOut();
-    navigate({ to: "/login/company", replace: true });
+    navigate({ to: "/", replace: true });
   }
 
   return (

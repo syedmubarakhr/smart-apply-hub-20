@@ -13,7 +13,6 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
 
-
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -80,9 +79,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "SATS — Smart Applicant Tracking System" },
-      { name: "description", content: "Enterprise-grade applicant tracking with biometric verification for modern hiring teams." },
+      {
+        name: "description",
+        content:
+          "Enterprise-grade applicant tracking with biometric verification for modern hiring teams.",
+      },
       { property: "og:title", content: "SATS — Smart Applicant Tracking System" },
-      { property: "og:description", content: "Enterprise-grade applicant tracking with biometric verification for modern hiring teams." },
+      {
+        property: "og:description",
+        content:
+          "Enterprise-grade applicant tracking with biometric verification for modern hiring teams.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -142,5 +149,4 @@ function RootComponent() {
       <Toaster richColors position="top-right" />
     </QueryClientProvider>
   );
-
 }

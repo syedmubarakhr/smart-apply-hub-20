@@ -41,7 +41,8 @@ export const Route = createFileRoute("/_authenticated/dashboard/recruiter/")({
       { property: "og:title", content: "Recruiter Dashboard — SATS" },
       {
         property: "og:description",
-        content: "Track your requisitions, candidates, interviews and performance in one workspace.",
+        content:
+          "Track your requisitions, candidates, interviews and performance in one workspace.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -173,9 +174,21 @@ function RecruiterDashboard() {
           Candidate pipeline
         </h2>
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          <StatCard label="AI match" value="—" hint="Average match score" icon={BrainCircuit} tone="accent" />
+          <StatCard
+            label="AI match"
+            value="—"
+            hint="Average match score"
+            icon={BrainCircuit}
+            tone="accent"
+          />
           <StatCard label="Interviews" value="—" hint="Scheduled this week" icon={CalendarCheck} />
-          <StatCard label="Performance" value="—" hint="Selections vs target" icon={TrendingUp} tone="accent" />
+          <StatCard
+            label="Performance"
+            value="—"
+            hint="Selections vs target"
+            icon={TrendingUp}
+            tone="accent"
+          />
         </div>
       </section>
 
@@ -204,7 +217,13 @@ function RecruiterDashboard() {
                 width={32}
               />
               <Tooltip />
-              <Line type="monotone" dataKey="value" stroke="var(--primary)" strokeWidth={2} dot={false} />
+              <Line
+                type="monotone"
+                dataKey="value"
+                stroke="var(--primary)"
+                strokeWidth={2}
+                dot={false}
+              />
             </LineChart>
           </ChartFrame>
         </div>

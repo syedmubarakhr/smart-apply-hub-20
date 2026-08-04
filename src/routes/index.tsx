@@ -103,10 +103,18 @@ function Landing() {
             <span className="font-display text-lg font-bold">SATS</span>
           </Link>
           <nav className="hidden items-center gap-8 text-sm font-medium text-muted-foreground md:flex">
-            <a href="#features" className="hover:text-foreground">Features</a>
-            <a href="#roles" className="hover:text-foreground">For teams</a>
-            <a href="#security" className="hover:text-foreground">Security</a>
-            <a href="#pricing" className="hover:text-foreground">Pricing</a>
+            <a href="#features" className="hover:text-foreground">
+              Features
+            </a>
+            <a href="#roles" className="hover:text-foreground">
+              For teams
+            </a>
+            <a href="#security" className="hover:text-foreground">
+              Security
+            </a>
+            <a href="#pricing" className="hover:text-foreground">
+              Pricing
+            </a>
           </nav>
           <div className="flex items-center gap-2">
             <Link
@@ -129,7 +137,10 @@ function Landing() {
       <section className="relative overflow-hidden bg-mesh">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -left-40 top-10 h-96 w-96 rounded-full bg-primary/25 blur-3xl animate-float" />
-          <div className="absolute right-0 top-40 h-[30rem] w-[30rem] rounded-full bg-accent/20 blur-3xl animate-float" style={{ animationDelay: "3s" }} />
+          <div
+            className="absolute right-0 top-40 h-[30rem] w-[30rem] rounded-full bg-accent/20 blur-3xl animate-float"
+            style={{ animationDelay: "3s" }}
+          />
         </div>
 
         <div className="relative mx-auto max-w-7xl px-6 pb-24 pt-20 lg:pt-28">
@@ -144,8 +155,8 @@ function Landing() {
               <span className="text-gradient">Verify smarter.</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-              SATS combines applicant tracking, biometric identity, and real-time
-              analytics into one modern platform built for teams that hire at scale.
+              SATS combines applicant tracking, biometric identity, and real-time analytics into one
+              modern platform built for teams that hire at scale.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <Link
@@ -182,9 +193,13 @@ function Landing() {
                     { label: "Verification pass rate", value: "98.7%", trend: "+3.1%" },
                   ].map((s) => (
                     <div key={s.label} className="glass-panel rounded-2xl p-5">
-                      <p className="text-xs uppercase tracking-widest text-muted-foreground">{s.label}</p>
+                      <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                        {s.label}
+                      </p>
                       <p className="mt-2 font-display text-3xl font-bold">{s.value}</p>
-                      <p className="mt-1 text-xs font-semibold text-primary">{s.trend} this quarter</p>
+                      <p className="mt-1 text-xs font-semibold text-primary">
+                        {s.trend} this quarter
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -233,7 +248,9 @@ function Landing() {
             <span className="inline-flex rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
               Platform
             </span>
-            <h2 className="mt-3 font-display text-4xl font-bold">Everything a modern hiring team needs</h2>
+            <h2 className="mt-3 font-display text-4xl font-bold">
+              Everything a modern hiring team needs
+            </h2>
             <p className="mt-3 text-muted-foreground">
               Built for velocity without compromising trust, fairness, or security.
             </p>
@@ -243,7 +260,10 @@ function Landing() {
             {features.map((f) => {
               const Icon = f.icon;
               return (
-                <div key={f.title} className="glass-card rounded-2xl p-6 transition hover:-translate-y-1">
+                <div
+                  key={f.title}
+                  className="glass-card rounded-2xl p-6 transition hover:-translate-y-1"
+                >
                   <div className="inline-grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-elegant">
                     <Icon className="h-5 w-5" />
                   </div>
@@ -261,7 +281,9 @@ function Landing() {
         <div className="relative overflow-hidden rounded-3xl bg-gradient-hero p-12 text-primary-foreground shadow-elegant">
           <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/20 blur-3xl" />
           <div className="relative max-w-2xl">
-            <h2 className="font-display text-4xl font-bold">Ready to modernize your hiring stack?</h2>
+            <h2 className="font-display text-4xl font-bold">
+              Ready to modernize your hiring stack?
+            </h2>
             <p className="mt-3 text-primary-foreground/80">
               Deploy SATS in days, not quarters. White-glove onboarding included.
             </p>
@@ -293,10 +315,18 @@ function Landing() {
             <span>© {new Date().getFullYear()}</span>
           </div>
           <div className="flex flex-wrap gap-6">
-            <a href="#" className="hover:text-foreground">Privacy</a>
-            <a href="#" className="hover:text-foreground">Terms</a>
-            <a href="#" className="hover:text-foreground">Security</a>
-            <a href="#" className="hover:text-foreground">Contact</a>
+            <a href="#" className="hover:text-foreground">
+              Privacy
+            </a>
+            <a href="#" className="hover:text-foreground">
+              Terms
+            </a>
+            <a href="#" className="hover:text-foreground">
+              Security
+            </a>
+            <a href="#" className="hover:text-foreground">
+              Contact
+            </a>
           </div>
         </div>
       </footer>

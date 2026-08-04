@@ -1,3 +1,5 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/integrations/supabase/types";
 import { z } from "zod";
 
 export interface CompanyRow {
@@ -52,7 +54,14 @@ export const statusSchema = z.object({
 
 export const idSchema = z.object({ id: z.string().uuid() });
 
-export async function assertDeveloper(supabase: any, userId: string) {
+type RpcClient = {
+  rpc: (
+    fn: string,
+    args: Record<string, unknown>,
+  ) => Promise<{ data: unknown; error: { message: string } | null }>;
+};
+
+export async function assertDeveloper(supabase: SupabaseClient<Database>, userId: string) {
   const { data, error } = await supabase.rpc("has_role", {
     _user_id: userId,
     _role: "developer",
