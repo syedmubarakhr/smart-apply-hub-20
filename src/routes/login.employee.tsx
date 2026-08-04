@@ -28,7 +28,7 @@ function EmployeeLogin() {
         </div>
       }
     >
-      <LoginForm role="employee" redirectTo="/face/verify" cta="Sign in to portal" accent="orange" identifierLabel="Username (email)" />
+      <LoginForm role="employee" redirectTo="/employee" cta="Sign in to portal" accent="orange" identifierLabel="Username (email)" />
     </AuthShell>
   );
 }

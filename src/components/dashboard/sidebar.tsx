@@ -140,7 +140,7 @@ export function DashboardSidebar({ role, open, onClose }: Props) {
 
   async function handleLogout() {
     await signOut();
-    navigate({ to: "/login/company", replace: true });
+    navigate({ to: "/", replace: true });
   }
 
   return (
