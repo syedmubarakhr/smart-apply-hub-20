@@ -85,7 +85,9 @@ function FaceVerify() {
         ? "/dashboard/developer"
         : role === "company"
           ? "/dashboard/company"
-          : "/dashboard/recruiter";
+          : role === "hr_lead"
+            ? "/dashboard/hr-lead"
+            : "/dashboard/recruiter";
     setTimeout(() => navigate({ to: destination }), 900);
   }
 

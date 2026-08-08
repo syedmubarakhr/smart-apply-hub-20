@@ -78,9 +78,7 @@ const PAGE_SIZE = 10;
 
 function StatusBadge({ status }: { status: FaceApprovalRow["status"] }) {
   if (status === "approved")
-    return (
-      <Badge className="bg-primary/15 text-primary hover:bg-primary/15">Approved</Badge>
-    );
+    return <Badge className="bg-primary/15 text-primary hover:bg-primary/15">Approved</Badge>;
   if (status === "rejected") return <Badge variant="destructive">Rejected</Badge>;
   return <Badge className="bg-accent/15 text-accent hover:bg-accent/15">Pending</Badge>;
 }
@@ -101,19 +99,10 @@ function Thumb({ userId, payload, label }: { userId: string; payload: string; la
   });
 
   return src ? (
-    <img
-      src={src}
-      alt={label}
-      loading="lazy"
-      className="h-full w-full rounded-xl object-cover"
-    />
+    <img src={src} alt={label} loading="lazy" className="h-full w-full rounded-xl object-cover" />
   ) : (
     <div className="grid h-full w-full place-items-center rounded-xl bg-muted text-muted-foreground">
-      {isFetching ? (
-        <Loader2 className="h-4 w-4 animate-spin" />
-      ) : (
-        <ScanFace className="h-4 w-4" />
-      )}
+      {isFetching ? <Loader2 className="h-4 w-4 animate-spin" /> : <ScanFace className="h-4 w-4" />}
     </div>
   );
 }
@@ -370,9 +359,7 @@ function Page() {
       <Dialog open={Boolean(viewing)} onOpenChange={(open) => !open && setViewing(null)}>
         <DialogContent className="max-w-3xl">
           <DialogHeader>
-            <DialogTitle>
-              Registration images — {viewing?.display_name ?? "Employee"}
-            </DialogTitle>
+            <DialogTitle>Registration images — {viewing?.display_name ?? "Employee"}</DialogTitle>
           </DialogHeader>
           {images.isLoading ? (
             <div className="grid h-48 place-items-center text-sm text-muted-foreground">
@@ -426,9 +413,7 @@ function Page() {
                 if (pendingReject) rejectMutation.mutate(pendingReject);
               }}
             >
-              {rejectMutation.isPending ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : null}
+              {rejectMutation.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
               Reject registration
             </AlertDialogAction>
           </AlertDialogFooter>
