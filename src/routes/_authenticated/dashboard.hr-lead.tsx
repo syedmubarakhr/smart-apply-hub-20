@@ -8,6 +8,10 @@ const TITLES: Record<string, { title: string; subtitle: string }> = {
     title: "HR Lead Overview",
     subtitle: "Recruiter status, requisition flow, and hiring funnel",
   },
+  "/dashboard/hr-lead/face-approvals": {
+    title: "Face Registration Approval",
+    subtitle: "Review, approve, or reject employee biometric enrollment",
+  },
 };
 
 export const Route = createFileRoute("/_authenticated/dashboard/hr-lead")({

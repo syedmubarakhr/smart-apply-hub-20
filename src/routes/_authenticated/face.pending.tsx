@@ -39,6 +39,7 @@ function FacePending() {
       const next = (data?.status as "pending" | "approved" | "rejected" | undefined) ?? null;
       setStatus(next);
       if (next === "approved") navigate({ to: "/face/verify" });
+      if (next === "rejected") navigate({ to: "/face/register" });
       if (next === null) navigate({ to: "/face/register" });
     }
 
@@ -81,11 +82,11 @@ function FacePending() {
             {rejected ? "Registration rejected" : "Pending approval"}
           </span>
           <h1 className="mt-4 font-display text-3xl font-bold">
-            {rejected ? "Your enrollment was rejected" : "Waiting for HR approval"}
+            {rejected ? "Your enrollment was rejected" : "Waiting for HR Lead Approval"}
           </h1>
           <p className="mt-3 text-sm text-muted-foreground">
             {rejected
-              ? "Please contact your HR Lead to re-register your biometric profile."
+              ? "Your HR Lead rejected this enrollment. You'll be taken back to face registration to try again."
               : "Your encrypted face template has been submitted. An HR Lead will review it shortly — this page updates automatically."}
           </p>
 

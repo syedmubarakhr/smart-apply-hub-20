@@ -86,11 +86,16 @@ function FaceRegister() {
       );
       const payload = Object.fromEntries(encrypted) as Record<PoseKey, string>;
 
-      const { error } = await supabase.from("face_registrations").insert({
-        user_id: uid,
-        status: "pending",
-        ...payload,
-      });
+      const { error } = await supabase.from("face_registrations").upsert(
+        {
+          user_id: uid,
+          status: "pending",
+          reviewed_by: null,
+          reviewed_at: null,
+          ...payload,
+        },
+        { onConflict: "user_id" },
+      );
       if (error) throw new Error(error.message);
 
       toast.success("Face registered — pending HR approval.");

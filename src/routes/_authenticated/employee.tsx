@@ -27,6 +27,7 @@ export const Route = createFileRoute("/_authenticated/employee")({
       .maybeSingle();
 
     if (!registration) throw redirect({ to: "/face/register" });
+    if (registration.status === "rejected") throw redirect({ to: "/face/register" });
     if (registration.status !== "approved") throw redirect({ to: "/face/pending" });
     throw redirect({ to: "/face/verify" });
   },

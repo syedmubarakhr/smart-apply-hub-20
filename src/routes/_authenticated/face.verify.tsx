@@ -55,6 +55,10 @@ function FaceVerify() {
         navigate({ to: "/face/register" });
         return;
       }
+      if (registration.status === "rejected") {
+        navigate({ to: "/face/register" });
+        return;
+      }
       if (registration.status !== "approved") {
         navigate({ to: "/face/pending" });
         return;
@@ -81,7 +85,9 @@ function FaceVerify() {
         ? "/dashboard/developer"
         : role === "company"
           ? "/dashboard/company"
-          : "/dashboard/recruiter";
+          : role === "hr_lead"
+            ? "/dashboard/hr-lead"
+            : "/dashboard/recruiter";
     setTimeout(() => navigate({ to: destination }), 900);
   }
 

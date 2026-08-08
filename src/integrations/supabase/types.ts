@@ -186,33 +186,57 @@ export type Database = {
       }
       profiles: {
         Row: {
+          company_id: string | null
           created_at: string
+          department_id: string | null
           display_name: string | null
           email: string | null
           face_locked_at: string | null
           face_verify_attempts: number
           id: string
           updated_at: string
+          username: string | null
         }
         Insert: {
+          company_id?: string | null
           created_at?: string
+          department_id?: string | null
           display_name?: string | null
           email?: string | null
           face_locked_at?: string | null
           face_verify_attempts?: number
           id: string
           updated_at?: string
+          username?: string | null
         }
         Update: {
+          company_id?: string | null
           created_at?: string
+          department_id?: string | null
           display_name?: string | null
           email?: string | null
           face_locked_at?: string | null
           face_verify_attempts?: number
           id?: string
           updated_at?: string
+          username?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profiles_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       role_permissions: {
         Row: {
@@ -344,9 +368,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_face_approver: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
-      app_role: "developer" | "company" | "employee"
+      app_role: "developer" | "company" | "employee" | "hr_lead"
       company_status: "active" | "suspended"
       department_status: "active" | "inactive"
       face_registration_status: "pending" | "approved" | "rejected"
@@ -479,7 +504,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["developer", "company", "employee"],
+      app_role: ["developer", "company", "employee", "hr_lead"],
       company_status: ["active", "suspended"],
       department_status: ["active", "inactive"],
       face_registration_status: ["pending", "approved", "rejected"],

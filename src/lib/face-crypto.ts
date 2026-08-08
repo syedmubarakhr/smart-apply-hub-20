@@ -38,3 +38,25 @@ export async function encryptFaceImage(userId: string, payload: string): Promise
   const cipher = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, enc.encode(payload));
   return `v1.${toBase64(iv)}.${toBase64(new Uint8Array(cipher))}`;
 }
+
+function fromBase64(value: string): Uint8Array<ArrayBuffer> {
+  const raw = atob(value);
+  const bytes = new Uint8Array(new ArrayBuffer(raw.length));
+  for (let i = 0; i < raw.length; i += 1) bytes[i] = raw.charCodeAt(i);
+  return bytes;
+}
+
+/** Decrypts a `v1.<iv>.<ciphertext>` payload produced by encryptFaceImage. */
+export async function decryptFaceImage(userId: string, payload: string): Promise<string> {
+  if (!payload.startsWith("v1.")) return payload;
+  if (typeof crypto === "undefined" || !crypto.subtle) return payload;
+  const [, iv, cipher] = payload.split(".");
+  if (!iv || !cipher) return payload;
+  const key = await deriveKey(userId);
+  const plain = await crypto.subtle.decrypt(
+    { name: "AES-GCM", iv: fromBase64(iv) },
+    key,
+    fromBase64(cipher),
+  );
+  return new TextDecoder().decode(plain);
+}

@@ -99,6 +99,11 @@ const NAV: Record<
     {
       section: "Operations",
       items: [
+        {
+          to: "/dashboard/hr-lead/face-approvals",
+          label: "Face Registration Approval",
+          icon: ScanFace,
+        },
         { to: "/dashboard/hr-lead", label: "Approvals", icon: ShieldCheck },
         { to: "/dashboard/hr-lead", label: "Reports", icon: FileBarChart },
         { to: "/dashboard/hr-lead", label: "Settings", icon: Settings },
