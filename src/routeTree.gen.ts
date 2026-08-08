@@ -28,6 +28,7 @@ import { Route as AuthenticatedDashboardCompanyRouteImport } from './routes/_aut
 import { Route as AuthenticatedDashboardRecruiterIndexRouteImport } from './routes/_authenticated/dashboard.recruiter.index'
 import { Route as AuthenticatedDashboardHrLeadIndexRouteImport } from './routes/_authenticated/dashboard.hr-lead.index'
 import { Route as AuthenticatedDashboardDeveloperIndexRouteImport } from './routes/_authenticated/dashboard.developer.index'
+import { Route as AuthenticatedDashboardHrLeadFaceApprovalsRouteImport } from './routes/_authenticated/dashboard.hr-lead.face-approvals'
 import { Route as AuthenticatedDashboardDeveloperUsersRouteImport } from './routes/_authenticated/dashboard.developer.users'
 import { Route as AuthenticatedDashboardDeveloperSettingsRouteImport } from './routes/_authenticated/dashboard.developer.settings'
 import { Route as AuthenticatedDashboardDeveloperRolesRouteImport } from './routes/_authenticated/dashboard.developer.roles'
@@ -142,6 +143,12 @@ const AuthenticatedDashboardDeveloperIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardDeveloperRoute,
   } as any)
+const AuthenticatedDashboardHrLeadFaceApprovalsRoute =
+  AuthenticatedDashboardHrLeadFaceApprovalsRouteImport.update({
+    id: '/face-approvals',
+    path: '/face-approvals',
+    getParentRoute: () => AuthenticatedDashboardHrLeadRoute,
+  } as any)
 const AuthenticatedDashboardDeveloperUsersRoute =
   AuthenticatedDashboardDeveloperUsersRouteImport.update({
     id: '/users',
@@ -229,6 +236,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/developer/roles': typeof AuthenticatedDashboardDeveloperRolesRoute
   '/dashboard/developer/settings': typeof AuthenticatedDashboardDeveloperSettingsRoute
   '/dashboard/developer/users': typeof AuthenticatedDashboardDeveloperUsersRoute
+  '/dashboard/hr-lead/face-approvals': typeof AuthenticatedDashboardHrLeadFaceApprovalsRoute
   '/dashboard/developer/': typeof AuthenticatedDashboardDeveloperIndexRoute
   '/dashboard/hr-lead/': typeof AuthenticatedDashboardHrLeadIndexRoute
   '/dashboard/recruiter/': typeof AuthenticatedDashboardRecruiterIndexRoute
@@ -256,6 +264,7 @@ export interface FileRoutesByTo {
   '/dashboard/developer/roles': typeof AuthenticatedDashboardDeveloperRolesRoute
   '/dashboard/developer/settings': typeof AuthenticatedDashboardDeveloperSettingsRoute
   '/dashboard/developer/users': typeof AuthenticatedDashboardDeveloperUsersRoute
+  '/dashboard/hr-lead/face-approvals': typeof AuthenticatedDashboardHrLeadFaceApprovalsRoute
   '/dashboard/developer': typeof AuthenticatedDashboardDeveloperIndexRoute
   '/dashboard/hr-lead': typeof AuthenticatedDashboardHrLeadIndexRoute
   '/dashboard/recruiter': typeof AuthenticatedDashboardRecruiterIndexRoute
@@ -288,6 +297,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/developer/roles': typeof AuthenticatedDashboardDeveloperRolesRoute
   '/_authenticated/dashboard/developer/settings': typeof AuthenticatedDashboardDeveloperSettingsRoute
   '/_authenticated/dashboard/developer/users': typeof AuthenticatedDashboardDeveloperUsersRoute
+  '/_authenticated/dashboard/hr-lead/face-approvals': typeof AuthenticatedDashboardHrLeadFaceApprovalsRoute
   '/_authenticated/dashboard/developer/': typeof AuthenticatedDashboardDeveloperIndexRoute
   '/_authenticated/dashboard/hr-lead/': typeof AuthenticatedDashboardHrLeadIndexRoute
   '/_authenticated/dashboard/recruiter/': typeof AuthenticatedDashboardRecruiterIndexRoute
@@ -320,6 +330,7 @@ export interface FileRouteTypes {
     | '/dashboard/developer/roles'
     | '/dashboard/developer/settings'
     | '/dashboard/developer/users'
+    | '/dashboard/hr-lead/face-approvals'
     | '/dashboard/developer/'
     | '/dashboard/hr-lead/'
     | '/dashboard/recruiter/'
@@ -347,6 +358,7 @@ export interface FileRouteTypes {
     | '/dashboard/developer/roles'
     | '/dashboard/developer/settings'
     | '/dashboard/developer/users'
+    | '/dashboard/hr-lead/face-approvals'
     | '/dashboard/developer'
     | '/dashboard/hr-lead'
     | '/dashboard/recruiter'
@@ -378,6 +390,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/developer/roles'
     | '/_authenticated/dashboard/developer/settings'
     | '/_authenticated/dashboard/developer/users'
+    | '/_authenticated/dashboard/hr-lead/face-approvals'
     | '/_authenticated/dashboard/developer/'
     | '/_authenticated/dashboard/hr-lead/'
     | '/_authenticated/dashboard/recruiter/'
@@ -528,6 +541,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardDeveloperIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardDeveloperRoute
     }
+    '/_authenticated/dashboard/hr-lead/face-approvals': {
+      id: '/_authenticated/dashboard/hr-lead/face-approvals'
+      path: '/face-approvals'
+      fullPath: '/dashboard/hr-lead/face-approvals'
+      preLoaderRoute: typeof AuthenticatedDashboardHrLeadFaceApprovalsRouteImport
+      parentRoute: typeof AuthenticatedDashboardHrLeadRoute
+    }
     '/_authenticated/dashboard/developer/users': {
       id: '/_authenticated/dashboard/developer/users'
       path: '/users'
@@ -647,11 +667,14 @@ const AuthenticatedDashboardDeveloperRouteWithChildren =
   )
 
 interface AuthenticatedDashboardHrLeadRouteChildren {
+  AuthenticatedDashboardHrLeadFaceApprovalsRoute: typeof AuthenticatedDashboardHrLeadFaceApprovalsRoute
   AuthenticatedDashboardHrLeadIndexRoute: typeof AuthenticatedDashboardHrLeadIndexRoute
 }
 
 const AuthenticatedDashboardHrLeadRouteChildren: AuthenticatedDashboardHrLeadRouteChildren =
   {
+    AuthenticatedDashboardHrLeadFaceApprovalsRoute:
+      AuthenticatedDashboardHrLeadFaceApprovalsRoute,
     AuthenticatedDashboardHrLeadIndexRoute:
       AuthenticatedDashboardHrLeadIndexRoute,
   }
@@ -718,13 +741,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

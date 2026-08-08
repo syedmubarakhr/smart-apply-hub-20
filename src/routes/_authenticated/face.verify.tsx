@@ -55,6 +55,10 @@ function FaceVerify() {
         navigate({ to: "/face/register" });
         return;
       }
+      if (registration.status === "rejected") {
+        navigate({ to: "/face/register" });
+        return;
+      }
       if (registration.status !== "approved") {
         navigate({ to: "/face/pending" });
         return;

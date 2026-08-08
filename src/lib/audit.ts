@@ -6,6 +6,8 @@ export type AuditEvent =
   | "face_verify_failed"
   | "face_verify_locked"
   | "face_verify_reset"
+  | "face_registration_approved"
+  | "face_registration_rejected"
   | "login_success"
   | "logout";
 

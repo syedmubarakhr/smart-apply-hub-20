@@ -39,6 +39,7 @@ function FacePending() {
       const next = (data?.status as "pending" | "approved" | "rejected" | undefined) ?? null;
       setStatus(next);
       if (next === "approved") navigate({ to: "/face/verify" });
+      if (next === "rejected") navigate({ to: "/face/register" });
       if (next === null) navigate({ to: "/face/register" });
     }
 
