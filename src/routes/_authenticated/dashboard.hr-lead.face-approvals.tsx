@@ -71,7 +71,7 @@ export const Route = createFileRoute("/_authenticated/dashboard/hr-lead/face-app
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: Page;
+  component: Page,
 });
 
 const PAGE_SIZE = 10;
