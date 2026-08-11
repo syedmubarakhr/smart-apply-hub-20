@@ -21,6 +21,20 @@ export async function loadFaceApi(): Promise<FaceApi> {
     apiPromise = (async () => {
       const faceapi = await import("@vladmandic/face-api");
 
+      // Initialise a TFJS backend explicitly: WebGL when available, CPU otherwise.
+      const tf = (faceapi as unknown as { tf: TfRuntime }).tf;
+      const backends = ["webgl", "cpu"];
+      for (const backend of backends) {
+        try {
+          if (await tf.setBackend(backend)) break;
+        } catch {
+          /* try the next backend */
+        }
+      }
+      await tf.ready();
+
+
+
       await Promise.all([
         faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
         faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
