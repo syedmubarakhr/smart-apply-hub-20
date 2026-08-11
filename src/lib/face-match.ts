@@ -14,7 +14,13 @@ export const FACE_MATCH_THRESHOLD = (() => {
   return Number.isFinite(raw) && raw > 0 && raw < 1 ? raw : 0.82;
 })();
 
+interface TfRuntime {
+  setBackend: (name: string) => Promise<boolean>;
+  ready: () => Promise<void>;
+}
+
 let apiPromise: Promise<FaceApi> | null = null;
+
 
 export async function loadFaceApi(): Promise<FaceApi> {
   if (!apiPromise) {
