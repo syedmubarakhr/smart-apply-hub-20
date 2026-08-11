@@ -1,51 +1,78 @@
 import { useRef, useState } from "react";
 import { CheckCircle2, Loader2, ScanFace, ShieldAlert, ShieldCheck } from "lucide-react";
 import { WebcamCapture, type WebcamCaptureHandle } from "@/components/webcam/webcam-capture";
+import {
+  bestSimilarity,
+  descriptorFromDataUrl,
+  FACE_MATCH_THRESHOLD,
+  type DetectFailure,
+} from "@/lib/face-match";
+
+export type VerificationFailure = DetectFailure | "mismatch";
 
 interface Props {
   attemptsRemaining: number;
-  onVerified: (capture: string) => void;
-  onFailed: () => void;
-  /**
-   * Simulated match probability [0..1]. Real face-matching model wires in later;
-   * for now we placeholder with a deterministic pseudo-check.
-   */
+  /** In-memory embeddings derived from the employee's approved registration. */
+  enrolledDescriptors: Float32Array[];
+  onVerified: (score: number) => void;
+  /** Only called for a genuine face mismatch (counts as a failed attempt). */
+  onFailed: (score: number) => void;
+  /** Non-attempt problems (no face, multiple faces, model error). */
+  onIssue?: (reason: VerificationFailure) => void;
+  /** Cosine-similarity threshold in [0..1]. */
   matchThreshold?: number;
 }
 
 type Phase = "idle" | "scanning" | "success" | "failed";
 
+const MESSAGES: Record<VerificationFailure, string> = {
+  no_face: "No face detected — center your face in the circle and try again.",
+  multiple_faces: "Multiple faces detected — make sure you are alone in the frame.",
+  model_error: "Face engine unavailable. Check your connection and try again.",
+  mismatch: "Face not recognized.",
+};
+
 export function FaceVerificationPanel({
   attemptsRemaining,
+  enrolledDescriptors,
   onVerified,
   onFailed,
-  matchThreshold = 0.6,
+  onIssue,
+  matchThreshold = FACE_MATCH_THRESHOLD,
 }: Props) {
   const webcamRef = useRef<WebcamCaptureHandle | null>(null);
   const [phase, setPhase] = useState<Phase>("idle");
   const [message, setMessage] = useState<string | null>(null);
 
-  function runVerification() {
-    const frame = webcamRef.current?.capture();
+  async function runVerification() {
+    let frame = webcamRef.current?.capture();
     if (!frame) {
       setMessage("Camera isn't ready yet — please wait a moment.");
       return;
     }
     setMessage(null);
     setPhase("scanning");
-    // Placeholder verification: simulate model inference latency.
-    // TODO: replace with real face-embedding compare against stored template.
-    window.setTimeout(() => {
-      const score = Math.random();
-      if (score >= 1 - matchThreshold) {
+    try {
+      const result = await descriptorFromDataUrl(frame);
+      if (!result.ok) {
+        setPhase("failed");
+        setMessage(MESSAGES[result.reason]);
+        onIssue?.(result.reason);
+        return;
+      }
+      const score = bestSimilarity(result.descriptor, enrolledDescriptors);
+      if (score >= matchThreshold) {
         setPhase("success");
-        onVerified(frame);
+        onVerified(score);
       } else {
         setPhase("failed");
-        setMessage("We couldn't match your face. Please try again.");
-        onFailed();
+        setMessage(MESSAGES.mismatch);
+        onFailed(score);
       }
-    }, 1600);
+    } finally {
+      // Raw verification frame is discarded immediately; never persisted.
+      frame = null;
+    }
   }
 
   const scanning = phase === "scanning";
@@ -103,7 +130,7 @@ export function FaceVerificationPanel({
           {!succeeded && (
             <button
               onClick={runVerification}
-              disabled={scanning || attemptsRemaining <= 0}
+              disabled={scanning || attemptsRemaining <= 0 || enrolledDescriptors.length === 0}
               className="inline-flex items-center gap-2 rounded-xl bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-elegant transition hover:scale-[1.02] disabled:opacity-70"
             >
               {scanning ? (
