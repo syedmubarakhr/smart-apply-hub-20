@@ -1,10 +1,16 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowLeft, ScanFace, ShieldCheck } from "lucide-react";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { FaceVerificationPanel } from "@/components/face/face-verification-panel";
+import {
+  FaceVerificationPanel,
+  type VerificationFailure,
+} from "@/components/face/face-verification-panel";
 import { logAudit } from "@/lib/audit";
 import { fetchRole } from "@/lib/role-home";
+import { decryptFaceImage } from "@/lib/face-crypto";
+import { descriptorFromDataUrl, FACE_MATCH_THRESHOLD } from "@/lib/face-match";
 
 export const Route = createFileRoute("/_authenticated/face/verify")({
   head: () => ({
@@ -22,51 +28,77 @@ export const Route = createFileRoute("/_authenticated/face/verify")({
 });
 
 const MAX_ATTEMPTS = 3;
+const POSE_COLUMNS = ["image_front", "image_left", "image_right", "image_up", "image_smile"] as const;
 
 function FaceVerify() {
   const navigate = useNavigate();
   const [attempts, setAttempts] = useState(0);
   const [userId, setUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [descriptors, setDescriptors] = useState<Float32Array[]>([]);
+  const [enrollError, setEnrollError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const { data: userData } = await supabase.auth.getUser();
-      const uid = userData.user?.id ?? null;
-      if (!uid) return;
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("face_verify_attempts, face_locked_at")
-        .eq("id", uid)
-        .maybeSingle();
-      if (cancelled) return;
-      if (profile?.face_locked_at) {
-        navigate({ to: "/face/locked" });
-        return;
+      try {
+        const { data: userData } = await supabase.auth.getUser();
+        const uid = userData.user?.id ?? null;
+        if (!uid) return;
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("face_verify_attempts, face_locked_at")
+          .eq("id", uid)
+          .maybeSingle();
+        if (cancelled) return;
+        if (profile?.face_locked_at) {
+          navigate({ to: "/face/locked" });
+          return;
+        }
+        const { data: registration, error: regError } = await supabase
+          .from("face_registrations")
+          .select("status, image_front, image_left, image_right, image_up, image_smile")
+          .eq("user_id", uid)
+          .maybeSingle();
+        if (cancelled) return;
+        if (regError) throw new Error(regError.message);
+        if (!registration || registration.status === "rejected") {
+          navigate({ to: "/face/register" });
+          return;
+        }
+        if (registration.status !== "approved") {
+          navigate({ to: "/face/pending" });
+          return;
+        }
+
+        setUserId(uid);
+        setAttempts(profile?.face_verify_attempts ?? 0);
+        logAudit("face_verify_started");
+
+        // Derive embeddings from the existing encrypted enrollment, in memory only.
+        const refs: Float32Array[] = [];
+        for (const column of POSE_COLUMNS) {
+          const stored = registration[column];
+          if (!stored) continue;
+          const image = await decryptFaceImage(uid, stored);
+          const result = await descriptorFromDataUrl(image);
+          if (result.ok) refs.push(result.descriptor);
+        }
+        if (cancelled) return;
+        if (refs.length === 0) {
+          setEnrollError(
+            "We couldn't read a usable face from your registration. Please register your face again.",
+          );
+        }
+        setDescriptors(refs);
+      } catch (err) {
+        if (cancelled) return;
+        setEnrollError(
+          err instanceof Error ? err.message : "Unable to load your face registration.",
+        );
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-      const { data: registration } = await supabase
-        .from("face_registrations")
-        .select("status")
-        .eq("user_id", uid)
-        .maybeSingle();
-      if (cancelled) return;
-      if (!registration) {
-        navigate({ to: "/face/register" });
-        return;
-      }
-      if (registration.status === "rejected") {
-        navigate({ to: "/face/register" });
-        return;
-      }
-      if (registration.status !== "approved") {
-        navigate({ to: "/face/pending" });
-        return;
-      }
-      setUserId(uid);
-      setAttempts(profile?.face_verify_attempts ?? 0);
-      setLoading(false);
-      logAudit("face_verify_started");
     })();
     return () => {
       cancelled = true;
@@ -75,10 +107,10 @@ function FaceVerify() {
 
   const attemptsRemaining = Math.max(0, MAX_ATTEMPTS - attempts);
 
-  async function handleVerified() {
+  async function handleVerified(score: number) {
     if (!userId) return;
     await supabase.from("profiles").update({ face_verify_attempts: 0 }).eq("id", userId);
-    await logAudit("face_verify_success", { attempts });
+    await logAudit("face_verify_success", { attempts, score, threshold: FACE_MATCH_THRESHOLD });
     const role = await fetchRole(userId);
     const destination =
       role === "developer"
@@ -91,22 +123,38 @@ function FaceVerify() {
     setTimeout(() => navigate({ to: destination }), 900);
   }
 
-  async function handleFailed() {
+  function handleIssue(reason: VerificationFailure) {
+    toast.error(
+      reason === "multiple_faces"
+        ? "Multiple faces detected — please be alone in frame."
+        : reason === "no_face"
+          ? "No face detected — center your face and retry."
+          : "Face engine unavailable. Please retry.",
+    );
+  }
+
+  async function handleFailed(score: number) {
     if (!userId) return;
     const next = attempts + 1;
     setAttempts(next);
-    await logAudit("face_verify_failed", { attempt: next });
-    if (next >= MAX_ATTEMPTS) {
-      await supabase
-        .from("profiles")
-        .update({ face_verify_attempts: next, face_locked_at: new Date().toISOString() })
-        .eq("id", userId);
-      await logAudit("face_verify_locked", { attempts: next });
-      navigate({ to: "/face/locked" });
-      return;
+    await logAudit("face_verify_failed", { attempt: next, score, threshold: FACE_MATCH_THRESHOLD });
+    toast.error(`Face not recognized. ${Math.max(0, MAX_ATTEMPTS - next)} attempt(s) remaining.`);
+    try {
+      if (next >= MAX_ATTEMPTS) {
+        await supabase
+          .from("profiles")
+          .update({ face_verify_attempts: next, face_locked_at: new Date().toISOString() })
+          .eq("id", userId);
+        await logAudit("face_verify_locked", { attempts: next });
+        navigate({ to: "/face/locked" });
+        return;
+      }
+      await supabase.from("profiles").update({ face_verify_attempts: next }).eq("id", userId);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Network error while saving your attempt.");
     }
-    await supabase.from("profiles").update({ face_verify_attempts: next }).eq("id", userId);
   }
+
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background bg-mesh">
