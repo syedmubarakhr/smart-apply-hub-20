@@ -29,15 +29,17 @@ export async function loadFaceApi(): Promise<FaceApi> {
 
       // Initialise a TFJS backend explicitly: WebGL when available, CPU otherwise.
       const tf = (faceapi as unknown as { tf: TfRuntime }).tf;
-      const backends = ["webgl", "cpu"];
-      for (const backend of backends) {
+      for (const backend of ["webgl", "cpu"]) {
         try {
-          if (await tf.setBackend(backend)) break;
+          if (await tf.setBackend(backend)) {
+            await tf.ready();
+            if (tf.getBackend() === backend) break;
+          }
         } catch {
           /* try the next backend */
         }
       }
-      await tf.ready();
+
 
 
 
