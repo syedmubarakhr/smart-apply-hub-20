@@ -28,7 +28,13 @@ export const Route = createFileRoute("/_authenticated/face/verify")({
 });
 
 const MAX_ATTEMPTS = 3;
-const POSE_COLUMNS = ["image_front", "image_left", "image_right", "image_up", "image_smile"] as const;
+const POSE_COLUMNS = [
+  "image_front",
+  "image_left",
+  "image_right",
+  "image_up",
+  "image_smile",
+] as const;
 
 function FaceVerify() {
   const navigate = useNavigate();
@@ -155,7 +161,6 @@ function FaceVerify() {
     }
   }
 
-
   return (
     <div className="relative min-h-screen overflow-hidden bg-background bg-mesh">
       <div className="pointer-events-none absolute inset-0">
@@ -211,7 +216,6 @@ function FaceVerify() {
             />
           )}
         </div>
-
 
         <p className="mt-4 text-center text-xs text-muted-foreground">
           Haven't registered yet?{" "}
