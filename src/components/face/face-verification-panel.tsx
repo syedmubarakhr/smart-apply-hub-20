@@ -62,14 +62,15 @@ export function FaceVerificationPanel({
         onIssue?.(result.reason);
         return;
       }
-      const score = bestSimilarity(result.descriptor, enrolledDescriptors);
-      if (score >= matchThreshold) {
+      const match = bestMatch(result.descriptor, enrolledDescriptors);
+      if (match.distance <= maxDistance) {
         setPhase("success");
-        onVerified(score);
+        onVerified(match);
       } else {
         setPhase("failed");
         setMessage(MESSAGES.mismatch);
-        onFailed(score);
+        onFailed(match);
+
       }
     } finally {
       // Raw verification frame is discarded immediately; never persisted.
