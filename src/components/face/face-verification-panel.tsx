@@ -40,7 +40,7 @@ export function FaceVerificationPanel({
   onVerified,
   onFailed,
   onIssue,
-  matchThreshold = FACE_MATCH_THRESHOLD,
+  maxDistance = FACE_MATCH_MAX_DISTANCE,
 }: Props) {
   const webcamRef = useRef<WebcamCaptureHandle | null>(null);
   const [phase, setPhase] = useState<Phase>("idle");
