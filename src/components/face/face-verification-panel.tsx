@@ -8,7 +8,6 @@ import {
   type DetectFailure,
 } from "@/lib/face-match";
 
-
 export type VerificationFailure = DetectFailure | "mismatch";
 
 interface Props {
@@ -22,7 +21,6 @@ interface Props {
   onIssue?: (reason: VerificationFailure) => void;
   /** Maximum embedding distance accepted as a match. */
   maxDistance?: number;
-
 }
 
 type Phase = "idle" | "scanning" | "success" | "failed";
@@ -70,7 +68,6 @@ export function FaceVerificationPanel({
         setPhase("failed");
         setMessage(MESSAGES.mismatch);
         onFailed(match);
-
       }
     } finally {
       // Raw verification frame is discarded immediately; never persisted.

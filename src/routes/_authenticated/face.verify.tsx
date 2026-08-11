@@ -10,7 +10,7 @@ import {
 import { logAudit } from "@/lib/audit";
 import { fetchRole } from "@/lib/role-home";
 import { decryptFaceImage } from "@/lib/face-crypto";
-import { descriptorFromDataUrl, FACE_MATCH_THRESHOLD } from "@/lib/face-match";
+import { descriptorFromDataUrl, FACE_MATCH_MAX_DISTANCE } from "@/lib/face-match";
 
 export const Route = createFileRoute("/_authenticated/face/verify")({
   head: () => ({
@@ -113,10 +113,15 @@ function FaceVerify() {
 
   const attemptsRemaining = Math.max(0, MAX_ATTEMPTS - attempts);
 
-  async function handleVerified(score: number) {
+  async function handleVerified(match: { distance: number; confidence: number }) {
     if (!userId) return;
     await supabase.from("profiles").update({ face_verify_attempts: 0 }).eq("id", userId);
-    await logAudit("face_verify_success", { attempts, score, threshold: FACE_MATCH_THRESHOLD });
+    await logAudit("face_verify_success", {
+      attempts,
+      distance: match.distance,
+      confidence: match.confidence,
+      maxDistance: FACE_MATCH_MAX_DISTANCE,
+    });
     const role = await fetchRole(userId);
     const destination =
       role === "developer"
@@ -139,11 +144,16 @@ function FaceVerify() {
     );
   }
 
-  async function handleFailed(score: number) {
+  async function handleFailed(match: { distance: number; confidence: number }) {
     if (!userId) return;
     const next = attempts + 1;
     setAttempts(next);
-    await logAudit("face_verify_failed", { attempt: next, score, threshold: FACE_MATCH_THRESHOLD });
+    await logAudit("face_verify_failed", {
+      attempt: next,
+      distance: match.distance,
+      confidence: match.confidence,
+      maxDistance: FACE_MATCH_MAX_DISTANCE,
+    });
     toast.error(`Face not recognized. ${Math.max(0, MAX_ATTEMPTS - next)} attempt(s) remaining.`);
     try {
       if (next >= MAX_ATTEMPTS) {

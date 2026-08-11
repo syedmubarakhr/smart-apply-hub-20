@@ -18,16 +18,13 @@ export const FACE_MATCH_MAX_DISTANCE = (() => {
   return Number.isFinite(raw) && raw > 0 && raw < 1.5 ? raw : 0.55;
 })();
 
-
 interface TfRuntime {
   setBackend: (name: string) => Promise<boolean>;
   getBackend: () => string;
   ready: () => Promise<void>;
 }
 
-
 let apiPromise: Promise<FaceApi> | null = null;
-
 
 export async function loadFaceApi(): Promise<FaceApi> {
   if (!apiPromise) {
@@ -46,9 +43,6 @@ export async function loadFaceApi(): Promise<FaceApi> {
           /* try the next backend */
         }
       }
-
-
-
 
       await Promise.all([
         faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
@@ -118,9 +112,6 @@ export function bestMatch(
     (best, ref) => Math.min(best, faceDistance(live, ref)),
     Number.POSITIVE_INFINITY,
   );
-  const confidence = Number.isFinite(distance)
-    ? Math.min(1, Math.max(0, 1 - distance / 1.2))
-    : 0;
+  const confidence = Number.isFinite(distance) ? Math.min(1, Math.max(0, 1 - distance / 1.2)) : 0;
   return { distance, confidence };
 }
-
