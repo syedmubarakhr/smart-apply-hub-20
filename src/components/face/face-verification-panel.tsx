@@ -15,13 +15,14 @@ interface Props {
   attemptsRemaining: number;
   /** In-memory embeddings derived from the employee's approved registration. */
   enrolledDescriptors: Float32Array[];
-  onVerified: (score: number) => void;
+  onVerified: (result: { distance: number; confidence: number }) => void;
   /** Only called for a genuine face mismatch (counts as a failed attempt). */
-  onFailed: (score: number) => void;
+  onFailed: (result: { distance: number; confidence: number }) => void;
   /** Non-attempt problems (no face, multiple faces, model error). */
   onIssue?: (reason: VerificationFailure) => void;
-  /** Cosine-similarity threshold in [0..1]. */
-  matchThreshold?: number;
+  /** Maximum embedding distance accepted as a match. */
+  maxDistance?: number;
+
 }
 
 type Phase = "idle" | "scanning" | "success" | "failed";
