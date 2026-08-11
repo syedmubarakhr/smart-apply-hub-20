@@ -20,8 +20,7 @@ export async function loadFaceApi(): Promise<FaceApi> {
   if (!apiPromise) {
     apiPromise = (async () => {
       const faceapi = await import("@vladmandic/face-api");
-      await faceapi.tf.setBackend("webgl").catch(() => faceapi.tf.setBackend("cpu"));
-      await faceapi.tf.ready();
+
       await Promise.all([
         faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
         faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
