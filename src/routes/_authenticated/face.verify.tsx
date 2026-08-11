@@ -195,16 +195,23 @@ function FaceVerify() {
         <div className="mt-8">
           {loading ? (
             <div className="glass-card grid h-96 place-items-center rounded-3xl text-sm text-muted-foreground">
-              Loading verification…
+              Preparing secure face matching…
+            </div>
+          ) : enrollError ? (
+            <div className="glass-card grid h-96 place-items-center rounded-3xl px-6 text-center text-sm text-destructive">
+              {enrollError}
             </div>
           ) : (
             <FaceVerificationPanel
               attemptsRemaining={attemptsRemaining}
+              enrolledDescriptors={descriptors}
               onVerified={handleVerified}
               onFailed={handleFailed}
+              onIssue={handleIssue}
             />
           )}
         </div>
+
 
         <p className="mt-4 text-center text-xs text-muted-foreground">
           Haven't registered yet?{" "}
