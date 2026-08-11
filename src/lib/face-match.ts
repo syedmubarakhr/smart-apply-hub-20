@@ -8,11 +8,16 @@ type FaceApi = typeof import("@vladmandic/face-api");
 
 const MODEL_URL = (import.meta.env.VITE_FACE_MODEL_URL as string | undefined) ?? "/models";
 
-/** Cosine-similarity threshold in [0..1]; configurable without code changes. */
-export const FACE_MATCH_THRESHOLD = (() => {
-  const raw = Number(import.meta.env.VITE_FACE_MATCH_THRESHOLD);
-  return Number.isFinite(raw) && raw > 0 && raw < 1 ? raw : 0.82;
+/**
+ * Maximum euclidean distance between two 128-d embeddings for a match.
+ * 0.6 is the face-api reference value; 0.55 is slightly stricter.
+ * Configurable via VITE_FACE_MATCH_DISTANCE without code changes.
+ */
+export const FACE_MATCH_MAX_DISTANCE = (() => {
+  const raw = Number(import.meta.env.VITE_FACE_MATCH_DISTANCE);
+  return Number.isFinite(raw) && raw > 0 && raw < 1.5 ? raw : 0.55;
 })();
+
 
 interface TfRuntime {
   setBackend: (name: string) => Promise<boolean>;
