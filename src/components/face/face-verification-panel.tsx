@@ -2,11 +2,12 @@ import { useRef, useState } from "react";
 import { CheckCircle2, Loader2, ScanFace, ShieldAlert, ShieldCheck } from "lucide-react";
 import { WebcamCapture, type WebcamCaptureHandle } from "@/components/webcam/webcam-capture";
 import {
-  bestSimilarity,
+  bestMatch,
   descriptorFromDataUrl,
-  FACE_MATCH_THRESHOLD,
+  FACE_MATCH_MAX_DISTANCE,
   type DetectFailure,
 } from "@/lib/face-match";
+
 
 export type VerificationFailure = DetectFailure | "mismatch";
 
