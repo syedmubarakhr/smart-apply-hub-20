@@ -16,8 +16,10 @@ export const FACE_MATCH_THRESHOLD = (() => {
 
 interface TfRuntime {
   setBackend: (name: string) => Promise<boolean>;
+  getBackend: () => string;
   ready: () => Promise<void>;
 }
+
 
 let apiPromise: Promise<FaceApi> | null = null;
 
