@@ -98,24 +98,29 @@ export async function descriptorFromDataUrl(dataUrl: string): Promise<DetectResu
   }
 }
 
-/** Cosine similarity of two embeddings, clamped to [0..1]. */
-export function similarity(a: Float32Array, b: Float32Array): number {
-  let dot = 0;
-  let na = 0;
-  let nb = 0;
+/** Euclidean distance between two embeddings (lower = more similar). */
+export function faceDistance(a: Float32Array, b: Float32Array): number {
+  let sum = 0;
   const len = Math.min(a.length, b.length);
   for (let i = 0; i < len; i += 1) {
-    const x = a[i]!;
-    const y = b[i]!;
-    dot += x * y;
-    na += x * x;
-    nb += y * y;
+    const d = a[i]! - b[i]!;
+    sum += d * d;
   }
-  if (na === 0 || nb === 0) return 0;
-  return Math.min(1, Math.max(0, dot / (Math.sqrt(na) * Math.sqrt(nb))));
+  return Math.sqrt(sum);
 }
 
-/** Best similarity of a live embedding against every enrolled pose embedding. */
-export function bestSimilarity(live: Float32Array, enrolled: Float32Array[]): number {
-  return enrolled.reduce((best, ref) => Math.max(best, similarity(live, ref)), 0);
+/** Closest enrolled pose for a live embedding, plus a 0..1 confidence score. */
+export function bestMatch(
+  live: Float32Array,
+  enrolled: Float32Array[],
+): { distance: number; confidence: number } {
+  const distance = enrolled.reduce(
+    (best, ref) => Math.min(best, faceDistance(live, ref)),
+    Number.POSITIVE_INFINITY,
+  );
+  const confidence = Number.isFinite(distance)
+    ? Math.min(1, Math.max(0, 1 - distance / 1.2))
+    : 0;
+  return { distance, confidence };
 }
+
