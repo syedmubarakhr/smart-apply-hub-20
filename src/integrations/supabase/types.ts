@@ -194,6 +194,11 @@ export type Database = {
           face_locked_at: string | null
           face_verify_attempts: number
           id: string
+          last_login_at: string | null
+          mobile: string
+          reporting_manager_id: string | null
+          role_id: string | null
+          status: Database["public"]["Enums"]["user_status"]
           updated_at: string
           username: string | null
         }
@@ -206,6 +211,11 @@ export type Database = {
           face_locked_at?: string | null
           face_verify_attempts?: number
           id: string
+          last_login_at?: string | null
+          mobile?: string
+          reporting_manager_id?: string | null
+          role_id?: string | null
+          status?: Database["public"]["Enums"]["user_status"]
           updated_at?: string
           username?: string | null
         }
@@ -218,6 +228,11 @@ export type Database = {
           face_locked_at?: string | null
           face_verify_attempts?: number
           id?: string
+          last_login_at?: string | null
+          mobile?: string
+          reporting_manager_id?: string | null
+          role_id?: string | null
+          status?: Database["public"]["Enums"]["user_status"]
           updated_at?: string
           username?: string | null
         }
@@ -234,6 +249,20 @@ export type Database = {
             columns: ["department_id"]
             isOneToOne: false
             referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profiles_reporting_manager_id_fkey"
+            columns: ["reporting_manager_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profiles_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "roles"
             referencedColumns: ["id"]
           },
         ]
@@ -377,6 +406,7 @@ export type Database = {
       face_registration_status: "pending" | "approved" | "rejected"
       role_scope: "platform" | "company"
       role_status: "active" | "inactive"
+      user_status: "active" | "inactive"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -510,6 +540,7 @@ export const Constants = {
       face_registration_status: ["pending", "approved", "rejected"],
       role_scope: ["platform", "company"],
       role_status: ["active", "inactive"],
+      user_status: ["active", "inactive"],
     },
   },
 } as const
